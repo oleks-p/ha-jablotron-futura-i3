@@ -102,9 +102,20 @@ async def test_stop_all_is_five_single_commands(
 
 
 async def test_away_writes_each_u32_in_the_controllers_order(
-    hass: HomeAssistant, setup_integration, controller, mqtt_mock
+    hass: HomeAssistant, mqtt_mock, golden
 ):
-    """The controller builds u32s high word first here; writes must match."""
+    """A controller that builds u32s high word first; writes must match."""
+    from tests.conftest import FakeController, full_layout, golden_store, make_entry
+
+    channels = full_layout(halves=False)
+    entry = make_entry(channels)
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    controller = FakeController(hass, golden_store(golden), channels)
+    controller.heartbeat()
+    controller.publish_all()
+    await settle(hass)
+    setup_integration = entry
     mqtt_mock.async_publish.reset_mock()
     await hass.services.async_call(
         "jablotron_futura_i3", "clear_away", {}, blocking=True
@@ -131,7 +142,7 @@ async def test_a_scaled_channel_is_divided_back_out(
             type="mb_float", n=900, table=Table.HOLDING, address=10,
             readable=True, writable=True, multiplier=0.1, name="setpoint",
         )
-        for ch in full_layout()
+        for ch in full_layout(halves=False)
     ]
     entry = make_entry(channels)
     entry.add_to_hass(hass)
@@ -238,7 +249,7 @@ async def test_a_failed_duplicate_does_not_hide_a_working_channel(
     """A site may keep a broken mb_u32 beside the mb_u16 that replaced it."""
     from tests.conftest import FakeController, full_layout, golden_store, make_entry
 
-    channels = full_layout()
+    channels = full_layout(halves=False)
     broken = Channel(
         type="mb_u32", n=1, table=Table.INPUT, address=16, readable=True,
         writable=False, name="old mode bits",
@@ -257,3 +268,30 @@ async def test_a_failed_duplicate_does_not_hide_a_working_channel(
     async_fire_mqtt_message(hass, fake.topic(good, "available"), "0")
     await settle(hass)
     assert hass.states.get("binary_sensor.jablotron_futura_device_on").state == "unknown"
+
+
+async def test_word_order_from_known_words_when_firmware_stays_quiet(
+    hass: HomeAssistant, mqtt_mock, golden
+):
+    """A controller that never republishes firmware: the seed settles it."""
+    from custom_components.jablotron_futura_i3.const import CONF_SEED
+    from tests.conftest import FakeController, full_layout, golden_store, make_entry
+
+    channels = full_layout(halves=False)
+    entry = make_entry(channels, **{CONF_SEED: golden["store"]})
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    fake = FakeController(hass, golden_store(golden), channels)
+    fake.heartbeat()
+    # Only the valve layout publishes; neither firmware nor serial does.
+    fake.publish(fake.channel_at(Table.INPUT, 70))
+    await settle(hass)
+    coordinator = hass.data["jablotron_futura_i3"][entry.entry_id]
+    assert coordinator.client.word_order == "hi_lo"
+
+    # From then on a live 32-bit value decodes: the unit goes to standby.
+    fake.set_word(Table.INPUT, 17, 1 << (20 - 16))
+    await settle(hass)
+    assert hass.states.get("binary_sensor.jablotron_futura_standby").state == "on"
+
+

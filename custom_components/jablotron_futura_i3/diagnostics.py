@@ -10,6 +10,8 @@ from homeassistant.core import HomeAssistant
 
 from .const import CONF_CHANNELS, CONF_MAC, CONF_SEED, CONF_SERIAL, DOMAIN
 from .coordinator import FuturaCoordinator
+from .i3_client import SERIAL_ADDRESS
+from .registers import Table
 
 TO_REDACT = {
     CONF_SERIAL,
@@ -27,6 +29,11 @@ async def async_get_config_entry_diagnostics(
     coordinator: FuturaCoordinator = hass.data[DOMAIN][entry.entry_id]
     client = coordinator.client
     data = coordinator.data
+    serial_points = {
+        ch.point
+        for ch in client.channels
+        if ch.table is Table.INPUT and ch.address == SERIAL_ADDRESS
+    }
     entry_data = {
         k: v for k, v in entry.data.items() if k not in (CONF_CHANNELS, CONF_SEED)
     }
@@ -42,6 +49,14 @@ async def async_get_config_entry_diagnostics(
             "controller_restarts": client.restarts,
             "problem": client.problem(),
             "failed_channels": client.failed_channels(),
+            "kept_static": client.kept_static(),
+            # Raw, before any word order: what to look at when it is not learned.
+            # The serial number's channel is left out, like the serial itself.
+            "u32_published": {
+                point: value
+                for point, value in client.u32_values().items()
+                if point not in serial_points
+            },
         },
         "channels": [
             f"{ch.point} -> {ch.table.value} {ch.address}"

@@ -119,6 +119,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     await coordinator.async_load()
     if data.get(CONF_SEED):
         client.seed(parse_seed(data[CONF_SEED]))
+        coordinator.update_registers()
 
     try:
         await client.async_start()

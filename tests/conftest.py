@@ -61,32 +61,66 @@ def golden_store(golden: dict[str, Any]) -> dict[tuple[Table, int], int]:
     return out
 
 
-def full_layout() -> list[Channel]:
+def hydrogen_value(first: int, second: int, order: str) -> int:
+    """What a Hydrogen N's 16-bit channel with the 32-bit data type publishes.
+
+    It assembles the pair in its byte order, holds that as a 32-bit float, and
+    keeps the low 16 bits -- the model every reading on the real unit fitted.
+    """
+    import struct  # noqa: PLC0415
+
+    a, b, c, d = first >> 8, first & 0xFF, second >> 8, second & 0xFF
+    data = {
+        "ABCD": (a, b, c, d), "CDAB": (c, d, a, b),
+        "BADC": (b, a, d, c), "DCBA": (d, c, b, a),
+    }[order]
+    value = int.from_bytes(bytes(data), "big")
+    rounded = int(struct.unpack(">f", struct.pack(">f", float(value)))[0])
+    return rounded & 0xFFFF
+
+
+def full_layout(halves: bool = False) -> list[Channel]:
     """A channel for every register the Modbus integration polled by default.
 
     That is everything but the temperature corrections (an opt-in there) and
-    the MAC, which no i3 channel can read.
+    the MAC, which no i3 channel can read. By default the form of a controller
+    that publishes 32-bit values whole. With `halves`, a Hydrogen N's: the
+    32-bit registers it can read exactly get a CDAB and a BADC channel, and the
+    rest get none -- they are kept from what was last known, or not bridged.
     """
+    from custom_components.jablotron_futura_i3.i3_layout import (  # noqa: PLC0415
+        BYTE_ORDERS,
+        EXACT_ORDER_FOR_WORD,
+        EXACT_U32_KEYS,
+    )
+
     channels: list[Channel] = []
-    for n, reg in enumerate(
-        (r for r in REGISTERS
-         if r.kind is not Kind.MAC and not r.key.endswith("_temp_correction")),
-        start=1,
-    ):
-        # The form a Hydrogen N reads: every register an mb_u16 channel, a
-        # 32-bit one with the u32 data type, spanning both words.
-        channels.append(
-            Channel(
-                type="mb_u16",
-                n=n,
-                table=reg.table,
-                address=reg.address,
-                readable=True,
-                writable=reg.table is Table.HOLDING,
-                name=reg.key,
-                span=reg.words,
-            )
+    n = 0
+    for reg in REGISTERS:
+        if reg.kind is Kind.MAC or reg.key.endswith("_temp_correction"):
+            continue
+        if halves and reg.words == 2 and reg.key not in EXACT_U32_KEYS:
+            continue
+        shapes = (
+            [BYTE_ORDERS[EXACT_ORDER_FOR_WORD[w]] for w in (0, 1)]
+            if halves and reg.words == 2 else [(-1, False)]
         )
+        for half, swapped in shapes:
+            n += 1
+            channels.append(
+                Channel(
+                    type="mb_u16",
+                    n=n,
+                    table=reg.table,
+                    address=reg.address,
+                    readable=True,
+                    writable=reg.table is Table.HOLDING,
+                    name=reg.key,
+                    span=reg.words,
+                    half=half,
+                    swapped=swapped,
+                )
+            )
     return channels
 
 
@@ -110,6 +144,16 @@ class FakeController:
 
     def value_of(self, ch: Channel) -> float:
         first = self.store.get((ch.table, ch.address), 0)
+        if ch.half >= 0:
+            from custom_components.jablotron_futura_i3.i3_layout import (  # noqa: PLC0415
+                BYTE_ORDERS,
+            )
+
+            order = next(o for o, shape in BYTE_ORDERS.items()
+                         if shape == (ch.half, ch.swapped))
+            return hydrogen_value(
+                first, self.store.get((ch.table, ch.address + 1), 0), order
+            )
         if ch.words == 2:
             second = self.store.get((ch.table, ch.address + 1), 0)
             return join_u32(first, second, self.order)
@@ -136,13 +180,13 @@ class FakeController:
     def set_word(self, table: Table, address: int, word: int) -> None:
         self.store[(table, address)] = word & 0xFFFF
         for ch in self.channels:
-            if ch.table is table and ch.address <= address < ch.address + ch.words:
+            if ch.table is table and address - ch.address in ch.delivers:
                 self.publish(ch)
-                return
 
-    def channel_at(self, table: Table, address: int) -> Channel:
+    def channel_at(self, table: Table, address: int, half: int = -1) -> Channel:
         return next(
-            ch for ch in self.channels if ch.table is table and ch.address == address
+            ch for ch in self.channels
+            if ch.table is table and ch.address == address and ch.half == half
         )
 
 

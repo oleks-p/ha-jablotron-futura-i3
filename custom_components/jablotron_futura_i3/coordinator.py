@@ -156,20 +156,25 @@ class FuturaCoordinator(DataUpdateCoordinator[FuturaData]):
         self.client = client
         self.device_name = device_name
         self._options = options or {}
-        covered = client.covered()
-        #: Registers every word of which some channel (or the configuration)
-        #: provides. Only these get entities, as only polled ones did before.
-        self._registers: tuple[Reg, ...] = tuple(
-            reg
-            for reg in REGISTERS
-            if all((reg.table, reg.address + i) in covered for i in range(reg.words))
-        )
+        #: Registers every word of which some channel (or the configuration,
+        #: or a kept static value) provides. Only these get entities, as only
+        #: polled ones did before. Worked out again once the cache is loaded.
+        self._registers: tuple[Reg, ...] = ()
+        self.update_registers()
         self._store: Store[dict[str, Any]] | None = (
             Store(hass, STORE_VERSION, store_key) if store_key else None
         )
         self._pending: CALLBACK_TYPE | None = None
         self.data = FuturaData()
         client.add_listener(self._on_publish)
+
+    def update_registers(self) -> None:
+        covered = self.client.covered()
+        self._registers = tuple(
+            reg
+            for reg in REGISTERS
+            if all((reg.table, reg.address + i) in covered for i in range(reg.words))
+        )
 
     @property
     def serial(self) -> int:
@@ -192,6 +197,7 @@ class FuturaCoordinator(DataUpdateCoordinator[FuturaData]):
             return
         saved = await self._store.async_load()
         self.client.restore(saved)
+        self.update_registers()
 
     async def async_save_now(self) -> None:
         if self._store is not None:

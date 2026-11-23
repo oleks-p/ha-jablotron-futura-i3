@@ -44,11 +44,13 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from custom_components.jablotron_futura_i3.i3_layout import (  # noqa: E402
-    BYTE_SWAP_U32,
+    BYTE_ORDERS,
     CHANNEL_WORDS,
     DATA_TYPE_U32,
+    EXACT_ORDER_FOR_WORD,
     RTYPE_HOLDING,
     Fitted,
+    byte_swap_code,
     channel_type_for,
     channels_from_backup,
     check_layout,
@@ -113,8 +115,10 @@ def referenced_points(backup: dict, controller: str) -> set[str]:
     return found
 
 
-def _name(reg) -> str:
-    return f"F {reg.table.value[0].upper()}{reg.address} {reg.key}"[:NAME_LIMIT]
+def _name(reg, half: int = -1) -> str:
+    tail = "" if half < 0 else (" lo" if half == 0 else " hi")
+    head = f"F {reg.table.value[0].upper()}{reg.address} "
+    return head + reg.key[: NAME_LIMIT - len(head) - len(tail)] + tail
 
 
 def plan(backup: dict, controller: str, slave: int, fitted: Fitted, prune: bool):
@@ -149,59 +153,79 @@ def plan(backup: dict, controller: str, slave: int, fitted: Fitted, prune: bool)
         for ctype in CHANNEL_WORDS
     }
 
+    order_of_word = {}
+    for word, order in EXACT_ORDER_FOR_WORD.items():
+        code = byte_swap_code(order)
+        if code is None:
+            raise SystemExit(
+                f"the app's byte_swap code for {order} is not known yet: add it to "
+                "BYTE_SWAP_CODES in i3_layout.py, read from a backup with such a channel"
+            )
+        order_of_word[word] = (code, BYTE_ORDERS[order])
+
     for reg in wanted_registers(fitted):
         want_type = channel_type_for(reg)
         period_ms = period_for(reg) * 1000
-        # mb_u32 channels are never reused: a Hydrogen N accepts them and
-        # never reads them. One is replaced, and removed with --prune.
-        candidates = [
-            ch for ch in by_register.get((reg.table, reg.address), [])
-            if ch.words == reg.words and ch.point not in used and ch.type != "mb_u32"
-        ]
-        candidates.sort(key=lambda ch: (not ch.readable, ch.type != want_type))
-        if candidates:
-            ch = candidates[0]
-            used.add(ch.point)
-            cfg = _cfg(raw_by_point[ch.point])
-            changes = []
-            if not ch.readable:
-                cfg["register_type"] = RTYPE_HOLDING
-                changes.append("write-only -> read/write")
-            if int(cfg.get("period", 0)) != period_ms:
-                changes.append(f"period {int(cfg.get('period', 0)) // 1000}s -> {period_ms // 1000}s")
-                cfg["period"] = period_ms
-            log.append(("kept" if not changes else "changed", ch.point, reg.key, ", ".join(changes) or cfg.get("name", "")))
-            continue
+        # A 32-bit register is two half channels, one per word; anything else
+        # is one channel. mb_u32 and full-width 32-bit channels are never
+        # reused: a Hydrogen N accepts them and never reads them.
+        halves = (0, 1) if reg.words == 2 else (-1,)
+        for half in halves:
+            label = reg.key if half < 0 else f"{reg.key} {'lo' if half == 0 else 'hi'}"
+            wanted_shape = order_of_word[half][1] if half >= 0 else (-1, False)
+            candidates = [
+                ch for ch in by_register.get((reg.table, reg.address), [])
+                if ch.point not in used and ch.type != "mb_u32"
+                and (ch.half, ch.swapped) == wanted_shape
+                and (half >= 0 or ch.words == reg.words)
+            ]
+            candidates.sort(key=lambda ch: (not ch.readable, ch.type != want_type))
+            if candidates:
+                ch = candidates[0]
+                used.add(ch.point)
+                cfg = _cfg(raw_by_point[ch.point])
+                changes = []
+                if not ch.readable:
+                    cfg["register_type"] = RTYPE_HOLDING
+                    changes.append("write-only -> read/write")
+                if int(cfg.get("period", 0)) != period_ms:
+                    changes.append(
+                        f"period {int(cfg.get('period', 0)) // 1000}s -> {period_ms // 1000}s"
+                    )
+                    cfg["period"] = period_ms
+                log.append((
+                    "kept" if not changes else "changed", ch.point, label,
+                    ", ".join(changes) or cfg.get("name", ""),
+                ))
+                continue
 
-        if template is None:
-            raise SystemExit(f"{controller} has no Modbus channel to copy settings from")
-        raw = copy.deepcopy(template)
-        cfg = _cfg(raw)
-        n = next_id[want_type]
-        next_id[want_type] += 1
-        cfg.update(
-            {
-                "dev_id": slave,
-                "start_addr": reg.address,
-                "register_type": rtype_for(reg),
-                "period": period_ms,
-                "timeout": 0,
-                # A 32-bit register is one 16-bit-typed channel with the u32
-                # data type: the form a Hydrogen N actually reads.
-                "data_type": DATA_TYPE_U32 if reg.words == 2 else 1,
-                "byte_swap": BYTE_SWAP_U32 if reg.words == 2 else 5,
-                "multiplier": 1,
-                "bias": 0,
-                "id": n,
-                "name": _name(reg),
-                "entity_id": DEFAULT_ENTITY_ID,
-                "groups": groups,
-                "flags": 0,
-            }
-        )
-        config.setdefault(want_type, []).append(raw)
-        used.add(f"{want_type}/{n}")
-        log.append(("added", f"{want_type}/{n}", reg.key, f"every {period_ms // 1000}s"))
+            if template is None:
+                raise SystemExit(f"{controller} has no Modbus channel to copy settings from")
+            raw = copy.deepcopy(template)
+            cfg = _cfg(raw)
+            n = next_id[want_type]
+            next_id[want_type] += 1
+            cfg.update(
+                {
+                    "dev_id": slave,
+                    "start_addr": reg.address,
+                    "register_type": rtype_for(reg),
+                    "period": period_ms,
+                    "timeout": 0,
+                    "data_type": DATA_TYPE_U32 if half >= 0 else 1,
+                    "byte_swap": order_of_word[half][0] if half >= 0 else 5,
+                    "multiplier": 1,
+                    "bias": 0,
+                    "id": n,
+                    "name": _name(reg, half),
+                    "entity_id": DEFAULT_ENTITY_ID,
+                    "groups": groups,
+                    "flags": 0,
+                }
+            )
+            config.setdefault(want_type, []).append(raw)
+            used.add(f"{want_type}/{n}")
+            log.append(("added", f"{want_type}/{n}", label, f"every {period_ms // 1000}s"))
 
     referenced = referenced_points(backup, controller)
     for ch in existing:

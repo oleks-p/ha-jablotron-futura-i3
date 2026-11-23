@@ -53,6 +53,17 @@ FIRMWARE_MARKER = 9999
 FIRMWARE_ADDRESS = 8
 SERIAL_ADDRESS = 1
 MAC_ADDRESS = 3
+#: 32-bit input registers that do not change on a running unit: serial,
+#: hardware revision, firmware, fitted wall sensors and valves.
+STATIC_U32_ADDRESSES = frozenset({1, 6, 8, 67, 70, 72})
+#: Their words. One no channel carries -- because no channel can read it
+#: exactly -- keeps the value last known for it, from a previous run or from
+#: the Modbus integration that was replaced, and is never marked failed.
+STATIC_SLOTS: frozenset[tuple[Table, int]] = frozenset(
+    (Table.INPUT, address + offset)
+    for address in STATIC_U32_ADDRESSES
+    for offset in (0, 1)
+)
 
 #: Heartbeats arrive about every 60 s, round-robin with a per-controller phase,
 #: so anything below 180 s flaps.
@@ -185,7 +196,9 @@ class FuturaI3Client:
             key = (ch.table, ch.address)
             if ch.readable and key not in self._readers:
                 self._readers[key] = ch
-            if ch.writable and ch.table is Table.HOLDING:
+            # A half channel writes nothing sensible: it would send one word as
+            # the whole of a 32-bit value.
+            if ch.writable and ch.table is Table.HOLDING and ch.half < 0:
                 # A read/write channel is preferred over a write-only one,
                 # because its echo is a real read of the register.
                 current = self._writers.get(ch.address)
@@ -205,7 +218,7 @@ class FuturaI3Client:
         for ch in self.channels:
             if not ch.readable and self._readers.get((ch.table, ch.address)) is not ch:
                 continue
-            for offset in range(ch.words):
+            for offset in ch.delivers:
                 self._carriers.setdefault((ch.table, ch.address + offset), []).append(ch)
 
         self._order: str | None = None if word_order == WORD_ORDER_AUTO else word_order
@@ -252,6 +265,7 @@ class FuturaI3Client:
     def covered(self) -> set[tuple[Table, int]]:
         """Every register word this client can produce."""
         out: set[tuple[Table, int]] = set(self._carriers)
+        out.update(slot for slot in STATIC_SLOTS if slot in self._words)
         out.add((Table.INPUT, SERIAL_ADDRESS))
         out.add((Table.INPUT, SERIAL_ADDRESS + 1))
         if self.mac:
@@ -279,7 +293,7 @@ class FuturaI3Client:
                 slot = (Table(table), int(address))
             except ValueError:
                 continue
-            if slot in self.covered():
+            if slot in self._carriers or slot in STATIC_SLOTS:
                 self._words[slot] = int(word) & 0xFFFF
         for point, value in (saved.get("u32") or {}).items():
             if point in self._by_point:
@@ -288,9 +302,8 @@ class FuturaI3Client:
 
     def seed(self, words: dict[tuple[Table, int], int]) -> None:
         """Words known from elsewhere -- the Modbus integration being replaced."""
-        covered = self.covered()
         for slot, word in words.items():
-            if slot in covered:
+            if slot in self._carriers or slot in STATIC_SLOTS:
                 self._words[slot] = int(word) & 0xFFFF
         self._seed_static()
 
@@ -333,6 +346,14 @@ class FuturaI3Client:
 
     def failed_channels(self) -> list[str]:
         return sorted(self._failed)
+
+    def kept_static(self) -> list[str]:
+        """Registers shown from the last known value, with no channel behind them."""
+        return sorted(
+            f"{t.value}:{a}" for (t, a) in STATIC_SLOTS
+            if (t, a) in self._words and (t, a) not in self._carriers
+            and a - 1 not in STATIC_U32_ADDRESSES
+        )
 
     # -- subscription --------------------------------------------------------
 
@@ -432,6 +453,12 @@ class FuturaI3Client:
         raw = round(number / ch.multiplier) if ch.multiplier not in (0, 1) else round(number)
         if ch.words == 1:
             return self._store(ch.table, ch.address, int(raw) & 0xFFFF)
+        if ch.half >= 0:
+            # One word of a pair, already picked out by the controller.
+            word = int(raw) & 0xFFFF
+            if ch.swapped:
+                word = _swap_bytes(word)
+            return self._store(ch.table, ch.address + ch.half, word)
 
         value = int(raw) & 0xFFFFFFFF
         self._u32_values[ch.point] = value
@@ -440,6 +467,8 @@ class FuturaI3Client:
                 self._order = detect_order_from_firmware(value)
             elif ch.address == SERIAL_ADDRESS:
                 self._order = detect_order_from_serial(value, self.serial)
+            if self._order is None and ch.address in STATIC_U32_ADDRESSES:
+                self._order = self._detect_order_from_known(ch, value)
             if self._order is not None:
                 _LOGGER.info(
                     "Controller %s builds 32-bit values as %s", self.controller,
@@ -461,6 +490,25 @@ class FuturaI3Client:
         first, second = split_u32(value, self._order)
         moved = self._store(ch.table, ch.address, first)
         return self._store(ch.table, ch.address + 1, second) or moved
+
+    def _detect_order_from_known(self, ch: Channel, value: int) -> str | None:
+        """The one word order under which `value` reproduces known words.
+
+        The words come from the last run or the Modbus integration's readings.
+        Only registers that never change on a running unit are used -- identity
+        and fitted peripherals -- so a stale reading cannot fake a match, and
+        only an unambiguous answer counts: [0, 0] fits every order.
+        """
+        first = self._words.get((ch.table, ch.address))
+        second = self._words.get((ch.table, ch.address + 1))
+        if first is None or second is None or not (first or second):
+            return None
+        fits = [o for o in WORD_ORDERS if split_u32(value, o) == (first, second)]
+        return fits[0] if len(fits) == 1 else None
+
+    def u32_values(self) -> dict[str, int]:
+        """What each 32-bit channel last published, before any word order."""
+        return dict(self._u32_values)
 
     def _rederive_u32(self) -> bool:
         assert self._order is not None

@@ -53,8 +53,49 @@ CHANNEL_WORDS: dict[str, int] = {"mb_u16": 1, "mb_float": 1, "mb_u32": 2}
 #: i3 `data_type` of a 32-bit unsigned value, which makes a channel read two
 #: registers in one request whatever its channel type.
 DATA_TYPE_U32 = 3
-#: The byte order that channel type was set up with and seen working.
-BYTE_SWAP_U32 = 0
+
+#: A 16-bit channel type with the 32-bit data type reads both registers of a
+#: pair -- which the unit requires -- and assembles them in its byte order. It
+#: then holds the result as a 32-bit FLOAT, so anything wider than 24 bits loses
+#: its lowest bits to rounding, and publishes the low 16 bits of that. Measured
+#: on a Hydrogen N, every byte order on three registers, all twelve readings as
+#: that model predicts (DCBA on the supply valves showed 768 where an exact
+#: value would have been 650).
+#:
+#: So each such channel delivers one word of the pair, possibly byte-swapped:
+#:
+#:   order   assembles                        keeps
+#:   ABCD    low << 16 | high                 high
+#:   CDAB    high << 16 | low                 low
+#:   BADC    swap(low) << 16 | swap(high)     swap(high)
+#:   DCBA    swap(high) << 16 | swap(low)     swap(low)
+#:
+#: and it is exact while the assembled value fits 24 bits. For a register whose
+#: high word stays below 256 two channels are exact whatever the low word holds:
+#: CDAB (below 2**24) for the low word, BADC (every set bit within bits 8-31)
+#: for the high one. That covers the mode, error and warning bitfields, the wall
+#: sensor mask and the hardware revision. Nothing reads a wider register exactly.
+HALF_CHANNEL_TYPES = frozenset({"mb_u16"})
+
+#: Byte order name -> (word of the pair it keeps, whether its bytes are swapped).
+BYTE_ORDERS: dict[str, tuple[int, bool]] = {
+    "ABCD": (1, False),
+    "CDAB": (0, False),
+    "BADC": (1, True),
+    "DCBA": (0, True),
+}
+#: The app's `byte_swap` code for each order. 0 is ABCD; the others are read
+#: from a backup that has channels in them.
+BYTE_SWAP_CODES: dict[int, str] = {0: "ABCD"}
+#: The order each word of an exact pair is read in.
+EXACT_ORDER_FOR_WORD: dict[int, str] = {0: "CDAB", 1: "BADC"}
+
+
+def byte_swap_code(order: str) -> int | None:
+    for code, name in BYTE_SWAP_CODES.items():
+        if name == order:
+            return code
+    return None
 
 
 @dataclass(frozen=True, slots=True)
@@ -71,6 +112,11 @@ class Channel:
     name: str = ""
     #: Registers the channel reads in one request: 1, or 2 for a 32-bit value.
     span: int = 0
+    #: For a channel that reads a pair but delivers one word of it: which word
+    #: (0 = the first). -1 for a channel that delivers everything it reads.
+    half: int = -1
+    #: Whether that word arrives with its two bytes swapped.
+    swapped: bool = False
 
     @property
     def words(self) -> int:
@@ -98,7 +144,16 @@ class Channel:
             multiplier=float(data.get("multiplier", 1.0)),
             name=str(data.get("name", "")),
             span=int(data.get("span", 0)),
+            half=int(data.get("half", -1)),
+            swapped=bool(data.get("swapped", False)),
         )
+
+    @property
+    def delivers(self) -> tuple[int, ...]:
+        """Offsets, from `address`, of the register words a publish carries."""
+        if self.half >= 0:
+            return (self.half,)
+        return tuple(range(self.words))
 
 
 class LayoutError(ValueError):
@@ -166,6 +221,17 @@ def channels_from_backup(
                 continue
             multiplier = float(cfg.get("multiplier") or 1.0)
             span = 2 if int(cfg.get("data_type", -1)) == DATA_TYPE_U32 else CHANNEL_WORDS[ctype]
+            half, swapped = -1, False
+            if span == 2 and ctype in HALF_CHANNEL_TYPES:
+                swap = int(cfg.get("byte_swap", -1))
+                order = BYTE_SWAP_CODES.get(swap)
+                if order is None:
+                    skipped.append(
+                        f"{ctype}/{n} {name!r}: a 32-bit read kept to 16 bits, "
+                        f"with a byte order ({swap}) whose half is not known"
+                    )
+                    continue
+                half, swapped = BYTE_ORDERS[order]
             found.append(
                 Channel(
                     type=ctype,
@@ -177,6 +243,8 @@ def channels_from_backup(
                     multiplier=round(multiplier, 6),
                     name=name,
                     span=span,
+                    half=half,
+                    swapped=swapped,
                 )
             )
     return found, skipped
@@ -196,10 +264,24 @@ def check_layout(channels: Iterable[Channel]) -> list[str]:
     inside = {
         (reg.table, reg.address + 1): reg for reg in REGISTERS if reg.words == 2
     }
+    channels = list(channels)
+    halves: dict[tuple[Table, int], set[int]] = {}
+    for ch in channels:
+        if ch.half >= 0 and ch.readable:
+            halves.setdefault((ch.table, ch.address), set()).add(ch.half)
+    full = {(ch.table, ch.address) for ch in channels if ch.half < 0 and ch.words == 2}
+    for key, got in halves.items():
+        reg = composite.get(key)
+        if reg is not None and got != {0, 1} and key not in full:
+            missing = "first" if 0 not in got else "second"
+            problems.append(f"{reg.key}: no channel carries its {missing} word")
     seen: dict[tuple[Table, int], Channel] = {}
     for ch in channels:
         key = (ch.table, ch.address)
-        if ch.readable and key in seen and seen[key].readable and ch.words == seen[key].words:
+        if (
+            ch.readable and key in seen and seen[key].readable
+            and ch.words == seen[key].words and ch.delivers == seen[key].delivers
+        ):
             problems.append(
                 f"{ch.point} reads {ch.table.value} {ch.address}, "
                 f"which {seen[key].point} already reads"
@@ -225,6 +307,12 @@ def check_layout(channels: Iterable[Channel]) -> list[str]:
 # ---------------------------------------------------------------------------
 # What to bridge
 # ---------------------------------------------------------------------------
+
+#: 32-bit registers whose high word stays below 256, the only ones a pair of
+#: 16-bit channels reads exactly (see BYTE_ORDERS).
+EXACT_U32_KEYS: frozenset[str] = frozenset(
+    {"hw_revision", "mode_bits", "error_bits", "warning_bits", "connected_wall_sensors"}
+)
 
 #: Not bridged by default. The MAC is three registers and an i3 channel reads
 #: at most two, so it comes from configuration instead. The rest back entities
@@ -314,6 +402,11 @@ def wanted_registers(fitted: Fitted) -> list[Reg]:
     for reg in REGISTERS:
         if reg.key in SKIP_KEYS or reg.kind is Kind.MAC:
             continue
+        # The serial comes from configuration; the firmware and valve masks do
+        # not change on a running unit and are kept from what was last known;
+        # the away times are too wide to read exactly.
+        if reg.words == 2 and reg.key not in EXACT_U32_KEYS:
+            continue
         if reg.key.endswith("_temp_correction"):
             continue
         if reg.key.endswith(("_address", "_options")) and not reg.enabled_default:
@@ -346,7 +439,7 @@ def wanted_registers(fitted: Fitted) -> list[Reg]:
 
 
 def channel_type_for(reg: Reg) -> str:
-    """Every register is an mb_u16 channel; a 32-bit one gets DATA_TYPE_U32."""
+    """Every channel is an mb_u16; a 32-bit register gets two half channels."""
     return "mb_u16"
 
 
