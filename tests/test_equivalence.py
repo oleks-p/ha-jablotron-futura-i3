@@ -67,7 +67,8 @@ async def test_same_registry_fields_and_states(
 
 
 async def test_same_device(hass: HomeAssistant, setup_integration, golden):
-    devices = list(dr.async_get(hass).devices)
+    entry = setup_integration
+    devices = dr.async_entries_for_config_entry(dr.async_get(hass), entry.entry_id)
     assert len(devices) == 1
     device = devices[0]
     want = golden["devices"][0]

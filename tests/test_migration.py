@@ -8,6 +8,7 @@ from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
+from custom_components.jablotron_futura_i3 import _device_entries
 from custom_components.jablotron_futura_i3.const import (
     CONF_MIGRATE_FROM,
     CONF_SEED,
@@ -86,7 +87,7 @@ async def test_takeover_keeps_every_row_and_the_device(
 
     device = dr.async_get(hass).async_get(device_id)
     assert device is not None, "the device must survive with its id"
-    assert device.config_entry_id == entry.entry_id
+    assert _device_entries(device) == (entry.entry_id,)
     assert device.area_id is not None
     assert (DOMAIN, str(SERIAL)) in device.identifiers
 
