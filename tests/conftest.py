@@ -68,21 +68,23 @@ def full_layout() -> list[Channel]:
     the MAC, which no i3 channel can read.
     """
     channels: list[Channel] = []
-    counters = {"mb_u16": 0, "mb_u32": 0}
-    for reg in REGISTERS:
-        if reg.kind is Kind.MAC or reg.key.endswith("_temp_correction"):
-            continue
-        ctype = "mb_u32" if reg.words == 2 else "mb_u16"
-        counters[ctype] += 1
+    for n, reg in enumerate(
+        (r for r in REGISTERS
+         if r.kind is not Kind.MAC and not r.key.endswith("_temp_correction")),
+        start=1,
+    ):
+        # The form a Hydrogen N reads: every register an mb_u16 channel, a
+        # 32-bit one with the u32 data type, spanning both words.
         channels.append(
             Channel(
-                type=ctype,
-                n=counters[ctype],
+                type="mb_u16",
+                n=n,
                 table=reg.table,
                 address=reg.address,
                 readable=True,
                 writable=reg.table is Table.HOLDING,
                 name=reg.key,
+                span=reg.words,
             )
         )
     return channels

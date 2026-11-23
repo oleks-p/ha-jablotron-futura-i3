@@ -58,7 +58,7 @@ MAC_ADDRESS = 3
 #: so anything below 180 s flaps.
 DEFAULT_HEARTBEAT_TIMEOUT = 240
 
-#: How the controller builds an mb_u32 value from the unit's two registers.
+#: How the controller builds a 32-bit channel value from the unit's two registers.
 #: ``lo_hi``: value = (r[1] << 16) | r[0], the Futura's own convention.
 #: ``hi_lo``: value = (r[0] << 16) | r[1], plain big-endian Modbus.
 #: The ``_swapped`` forms additionally swap the two bytes inside each word.
@@ -198,6 +198,15 @@ class FuturaI3Client:
             key = (ch.table, ch.address)
             if not ch.readable and key not in self._readers:
                 self._readers[key] = ch
+        #: Every channel that publishes each register word. Two can: a site may
+        #: keep an old channel beside a corrected one, and a word only counts
+        #: as failed when every channel carrying it has failed.
+        self._carriers: dict[tuple[Table, int], list[Channel]] = {}
+        for ch in self.channels:
+            if not ch.readable and self._readers.get((ch.table, ch.address)) is not ch:
+                continue
+            for offset in range(ch.words):
+                self._carriers.setdefault((ch.table, ch.address + offset), []).append(ch)
 
         self._order: str | None = None if word_order == WORD_ORDER_AUTO else word_order
         self._configured_order = word_order
@@ -242,9 +251,7 @@ class FuturaI3Client:
 
     def covered(self) -> set[tuple[Table, int]]:
         """Every register word this client can produce."""
-        out: set[tuple[Table, int]] = set()
-        for (table, address), ch in self._readers.items():
-            out.update((table, address + i) for i in range(ch.words))
+        out: set[tuple[Table, int]] = set(self._carriers)
         out.add((Table.INPUT, SERIAL_ADDRESS))
         out.add((Table.INPUT, SERIAL_ADDRESS + 1))
         if self.mac:
@@ -294,23 +301,14 @@ class FuturaI3Client:
         out: list[int] = []
         for offset in range(count):
             slot = (table, address + offset)
-            ch = self._channel_covering(slot)
-            if ch is not None and ch.point in self._failed:
+            carriers = self._carriers.get(slot)
+            if carriers and all(ch.point in self._failed for ch in carriers):
                 return None
             word = self._words.get(slot)
             if word is None:
                 return None
             out.append(word)
         return out
-
-    def _channel_covering(self, slot: tuple[Table, int]) -> Channel | None:
-        table, address = slot
-        ch = self._readers.get(slot)
-        if ch is None:
-            prev = self._readers.get((table, address - 1))
-            if prev is not None and prev.words == 2:
-                return prev
-        return ch
 
     async def read(self, table: str, address: int, count: int) -> list[int]:
         """Modbus-client compatible read, served from the word cache."""
@@ -328,8 +326,8 @@ class FuturaI3Client:
                 f"controller {self.controller} has not reported for "
                 f"{int(now - reference)} s"
             )
-        readable = [ch for ch in self.channels if ch.readable]
-        if readable and all(ch.point in self._failed for ch in readable):
+        carriers = {ch.point for chs in self._carriers.values() for ch in chs}
+        if carriers and carriers <= self._failed:
             return f"controller {self.controller} cannot read the unit"
         return None
 

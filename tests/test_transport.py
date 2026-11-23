@@ -128,7 +128,7 @@ async def test_a_scaled_channel_is_divided_back_out(
 
     channels = [
         ch if not (ch.table is Table.HOLDING and ch.address == 10) else Channel(
-            type="mb_float", n=1, table=Table.HOLDING, address=10,
+            type="mb_float", n=900, table=Table.HOLDING, address=10,
             readable=True, writable=True, multiplier=0.1, name="setpoint",
         )
         for ch in full_layout()
@@ -149,7 +149,7 @@ async def test_a_scaled_channel_is_divided_back_out(
         {"entity_id": "climate.jablotron_futura", "temperature": 22.5}, blocking=True,
     )
     assert mqtt_mock.async_publish.call_args.args[:2] == (
-        f"/devices/{CLIENT_ID}/commands/{CONTROLLER}/mb_float/1/set", "22.5"
+        f"/devices/{CLIENT_ID}/commands/{CONTROLLER}/mb_float/900/set", "22.5"
     )
 
 
@@ -230,3 +230,30 @@ async def test_word_cache_survives_a_restart_with_nothing_republished(
     await settle(hass)
     assert hass.states.get(FAN).attributes["preset_mode"] == "auto"
     assert hass.states.get("sensor.jablotron_futura_serial_number").state == str(SERIAL)
+
+
+async def test_a_failed_duplicate_does_not_hide_a_working_channel(
+    hass: HomeAssistant, mqtt_mock, golden
+):
+    """A site may keep a broken mb_u32 beside the mb_u16 that replaced it."""
+    from tests.conftest import FakeController, full_layout, golden_store, make_entry
+
+    channels = full_layout()
+    broken = Channel(
+        type="mb_u32", n=1, table=Table.INPUT, address=16, readable=True,
+        writable=False, name="old mode bits",
+    )
+    entry = make_entry([*channels, broken])
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    fake = FakeController(hass, golden_store(golden), channels)
+    fake.heartbeat()
+    fake.publish_all()
+    async_fire_mqtt_message(hass, fake.topic(broken, "available"), "0")
+    await settle(hass)
+    assert hass.states.get("binary_sensor.jablotron_futura_device_on").state == "on"
+
+    good = fake.channel_at(Table.INPUT, 16)
+    async_fire_mqtt_message(hass, fake.topic(good, "available"), "0")
+    await settle(hass)
+    assert hass.states.get("binary_sensor.jablotron_futura_device_on").state == "unknown"

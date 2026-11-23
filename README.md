@@ -29,10 +29,13 @@ Futura  ──Modbus──  i3 controller  ──MQTT──  Home Assistant
                       per register)         /devices/<client>/commands/<DEV>/<type>/<n>/set
 ```
 
-- **One channel per register.** `mb_u16` for a 16-bit register, `mb_u32` for a
-  32-bit one (the unit refuses a read that splits one, so a u32 is never two
-  `mb_u16`s). Input registers use register type 1 (read), holding registers
-  type 8 (read, and write on command).
+- **One channel per register.** An `mb_u16` channel for each; a 32-bit
+  register's channel has data type 3, so it reads both words in one request
+  (the unit refuses a read that splits one, so a u32 is never two channels).
+  `mb_u32` channels are understood too, but a Hydrogen N accepts them in the
+  app and never reads them, so the tool does not create them. Input registers
+  use register type 1 (read), holding registers type 8 (read, and write on
+  command).
 - **The map comes from the i3 app backup.** Setup takes the backup file and
   reads which channel carries which register from it. Nothing has to be typed.
 - **The controller publishes only on change, and retains nothing.** A register
@@ -138,6 +141,11 @@ repository's README for the card reference and the design tokens.
 - **Bus load.** Each channel is one request per period: the defaults (10 s for
   what a button changes, 30 s for measurements, 60 s for settings, 600 s for
   identity and fitted peripherals) come to about two requests a second.
+- **One 32-bit word order per controller.** It is learned from the first
+  32-bit channel that publishes the firmware or serial register, and applied
+  to all of them. That needs the controller to publish those channels at least
+  once with this integration listening: after adding them, or after a
+  controller restart.
 - **A value that changes while Home Assistant is down is missed** until it
   changes again, because the controller does not repeat it. Countdown timers and
   measurements move constantly and recover within a period; a setting changed

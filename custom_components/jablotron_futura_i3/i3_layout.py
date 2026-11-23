@@ -18,9 +18,12 @@ What a channel's configuration says, as established on a working site:
   offers others -- coils, discrete inputs, multiple-register writes -- that a
   Futura has no use for, so a channel of any other type is reported and left
   out rather than guessed at.
-* ``mb_u16`` covers one register, ``mb_u32`` two, read in one request. That
+* A 32-bit register is one channel reading both words in one request. That
   matters: the unit refuses a read that starts or ends inside a 32-bit value, so
-  a u32 must be one ``mb_u32`` channel, never two ``mb_u16`` ones.
+  a u32 must never be two 16-bit channels. On a Hydrogen N the working form is
+  an ``mb_u16`` channel with ``data_type`` 3: ``mb_u32`` channels were accepted
+  by the app there but never read, while the Futura saw no request for them.
+  ``mb_u32`` is still understood, since other controllers may read it.
 * ``multiplier`` scales the published value. The channels this integration
   adds use 1, so a channel publishes the raw register; an existing channel with
   another multiplier (a setpoint already shown in the app in degrees) is
@@ -43,8 +46,15 @@ RTYPE_INPUT = 1
 RTYPE_HOLDING_WRITE = 7
 RTYPE_HOLDING = 8
 
-#: Channel types that bridge a Modbus register, and how many words each covers.
+#: Channel types that bridge a Modbus register, and how many words each covers
+#: unless its data type says otherwise.
 CHANNEL_WORDS: dict[str, int] = {"mb_u16": 1, "mb_float": 1, "mb_u32": 2}
+
+#: i3 `data_type` of a 32-bit unsigned value, which makes a channel read two
+#: registers in one request whatever its channel type.
+DATA_TYPE_U32 = 3
+#: The byte order that channel type was set up with and seen working.
+BYTE_SWAP_U32 = 0
 
 
 @dataclass(frozen=True, slots=True)
@@ -59,10 +69,12 @@ class Channel:
     writable: bool
     multiplier: float = 1.0
     name: str = ""
+    #: Registers the channel reads in one request: 1, or 2 for a 32-bit value.
+    span: int = 0
 
     @property
     def words(self) -> int:
-        return CHANNEL_WORDS[self.type]
+        return self.span or CHANNEL_WORDS[self.type]
 
     @property
     def point(self) -> str:
@@ -85,6 +97,7 @@ class Channel:
             writable=bool(data["writable"]),
             multiplier=float(data.get("multiplier", 1.0)),
             name=str(data.get("name", "")),
+            span=int(data.get("span", 0)),
         )
 
 
@@ -152,6 +165,7 @@ def channels_from_backup(
                 skipped.append(f"{ctype}/{n} {name!r}: register type {rtype}")
                 continue
             multiplier = float(cfg.get("multiplier") or 1.0)
+            span = 2 if int(cfg.get("data_type", -1)) == DATA_TYPE_U32 else CHANNEL_WORDS[ctype]
             found.append(
                 Channel(
                     type=ctype,
@@ -162,6 +176,7 @@ def channels_from_backup(
                     writable=writable,
                     multiplier=round(multiplier, 6),
                     name=name,
+                    span=span,
                 )
             )
     return found, skipped
@@ -184,7 +199,7 @@ def check_layout(channels: Iterable[Channel]) -> list[str]:
     seen: dict[tuple[Table, int], Channel] = {}
     for ch in channels:
         key = (ch.table, ch.address)
-        if ch.readable and key in seen and seen[key].readable:
+        if ch.readable and key in seen and seen[key].readable and ch.words == seen[key].words:
             problems.append(
                 f"{ch.point} reads {ch.table.value} {ch.address}, "
                 f"which {seen[key].point} already reads"
@@ -201,8 +216,8 @@ def check_layout(channels: Iterable[Channel]) -> list[str]:
                 f"{ch.point} reads half of {reg.key}; it needs an mb_u32 channel"
             )
         if reg is None and ch.words == 2 and key not in inside:
-            # An mb_u32 over two separate u16 registers is legal Modbus but is
-            # not something this map ever does.
+            # A 32-bit read over two separate u16 registers is legal Modbus but
+            # is not something this map ever does.
             problems.append(f"{ch.point} reads two registers as one at {key[1]}")
     return problems
 
@@ -331,7 +346,8 @@ def wanted_registers(fitted: Fitted) -> list[Reg]:
 
 
 def channel_type_for(reg: Reg) -> str:
-    return "mb_u32" if reg.words == 2 else "mb_u16"
+    """Every register is an mb_u16 channel; a 32-bit one gets DATA_TYPE_U32."""
+    return "mb_u16"
 
 
 def rtype_for(reg: Reg) -> int:

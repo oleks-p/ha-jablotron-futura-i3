@@ -33,11 +33,13 @@ from custom_components.jablotron_futura_i3.registers import Table
 FILE_ID = "0123456789abcdef0123456789abcdef"
 
 
-def _channel(ctype: str, n: int, dev: int, addr: int, rtype: int, mult: float = 1.0):
+def _channel(
+    ctype: str, n: int, dev: int, addr: int, rtype: int, mult: float = 1.0, dtype: int = 1
+):
     return {
         "config": {
             "dev_id": dev, "start_addr": addr, "register_type": rtype,
-            "period": 30000, "byte_swap": 5, "data_type": 1, "multiplier": mult,
+            "period": 30000, "byte_swap": 5, "data_type": dtype, "multiplier": mult,
             "bias": 0, "id": n, "name": f"ch{n}", "entity_id": 201,
             "groups": "0x0000000000000000", "flags": 0, "timeout": 0,
             "metadata": {"register_modes": []},
@@ -63,6 +65,7 @@ def backup() -> dict:
                             _channel("mb_u16", 3, 1, 302, 7),
                             _channel("mb_u16", 4, 1, 5, 11),   # a coil: not ours
                             _channel("mb_u16", 5, 2, 1, 1),    # another slave
+                            _channel("mb_u16", 6, 1, 18, 1, dtype=3),  # 32-bit
                         ],
                         "mb_u32": [_channel("mb_u32", 1, 1, 16, 1)],
                         "mb_float": [_channel("mb_float", 1, 1, 10, 8, 0.1)],
@@ -79,7 +82,12 @@ class TestLayout:
     def test_reads_the_slaves_channels(self):
         channels, skipped = channels_from_backup(backup(), "a1b2", 1)
         by_point = {ch.point: ch for ch in channels}
-        assert set(by_point) == {"mb_u16/1", "mb_u16/2", "mb_u16/3", "mb_u32/1", "mb_float/1"}
+        assert set(by_point) == {
+            "mb_u16/1", "mb_u16/2", "mb_u16/3", "mb_u16/6", "mb_u32/1", "mb_float/1"
+        }
+        assert by_point["mb_u16/6"].words == 2 and by_point["mb_u16/2"].words == 1
+        assert by_point["mb_u32/1"].words == 2
+        assert Channel.from_dict(by_point["mb_u16/6"].as_dict()).words == 2
         assert by_point["mb_u16/1"].table is Table.HOLDING and by_point["mb_u16/1"].readable
         assert by_point["mb_u16/2"].table is Table.INPUT and not by_point["mb_u16/2"].writable
         assert not by_point["mb_u16/3"].readable and by_point["mb_u16/3"].writable
@@ -156,7 +164,7 @@ async def test_fresh_install_asks_for_the_serial(hass: HomeAssistant, tmp_path):
     assert data["controller"] == "A1B2"          # the only one with slave 1
     assert data["client_id"] == "i3"
     assert data["serial_number"] == 4200000001
-    assert len(data[CONF_CHANNELS]) == 5
+    assert len(data[CONF_CHANNELS]) == 6
     assert CONF_MIGRATE_FROM not in data
 
 

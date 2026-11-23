@@ -44,7 +44,9 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from custom_components.jablotron_futura_i3.i3_layout import (  # noqa: E402
+    BYTE_SWAP_U32,
     CHANNEL_WORDS,
+    DATA_TYPE_U32,
     RTYPE_HOLDING,
     Fitted,
     channel_type_for,
@@ -150,9 +152,11 @@ def plan(backup: dict, controller: str, slave: int, fitted: Fitted, prune: bool)
     for reg in wanted_registers(fitted):
         want_type = channel_type_for(reg)
         period_ms = period_for(reg) * 1000
+        # mb_u32 channels are never reused: a Hydrogen N accepts them and
+        # never reads them. One is replaced, and removed with --prune.
         candidates = [
             ch for ch in by_register.get((reg.table, reg.address), [])
-            if ch.words == reg.words and ch.point not in used
+            if ch.words == reg.words and ch.point not in used and ch.type != "mb_u32"
         ]
         candidates.sort(key=lambda ch: (not ch.readable, ch.type != want_type))
         if candidates:
@@ -182,8 +186,10 @@ def plan(backup: dict, controller: str, slave: int, fitted: Fitted, prune: bool)
                 "register_type": rtype_for(reg),
                 "period": period_ms,
                 "timeout": 0,
-                "data_type": 1,
-                "byte_swap": 5,
+                # A 32-bit register is one 16-bit-typed channel with the u32
+                # data type: the form a Hydrogen N actually reads.
+                "data_type": DATA_TYPE_U32 if reg.words == 2 else 1,
+                "byte_swap": BYTE_SWAP_U32 if reg.words == 2 else 5,
                 "multiplier": 1,
                 "bias": 0,
                 "id": n,
