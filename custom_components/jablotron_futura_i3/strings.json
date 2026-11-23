@@ -12,7 +12,7 @@
         },
         "data_description": {
           "backup": "The JSON file the i3 app exports. Export a fresh one after adding the Futura's channels.",
-          "client_id": "The MQTT client ID set in the i3 app. It is the second level of every topic: /devices/<client ID>/events/...",
+          "client_id": "The MQTT client ID set in the i3 app. It is the second level of every topic: /devices/CLIENT_ID/events/…",
           "controller": "The controller ID, such as A1B2. Leave empty when only one controller has channels for the unit.",
           "slave": "The Modbus address the controller's channels use for the Futura."
         }

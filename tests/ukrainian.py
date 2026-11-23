@@ -40,6 +40,7 @@ PROPER_NOUNS = (
     "A1B2",
     "/devices/",
     "/events/",
+    "CLIENT_ID",
     # A key in a card's YAML config, quoted in an error message. Translating it
     # would name an option that does not exist.
     "prefix",
