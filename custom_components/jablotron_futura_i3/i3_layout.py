@@ -84,9 +84,11 @@ BYTE_ORDERS: dict[str, tuple[int, bool]] = {
     "BADC": (1, True),
     "DCBA": (0, True),
 }
-#: The app's `byte_swap` code for each order. 0 is ABCD; the others are read
-#: from a backup that has channels in them.
-BYTE_SWAP_CODES: dict[int, str] = {0: "ABCD"}
+#: The app's `byte_swap` codes, from its own enum (i3home.web.app, 2026-11):
+#: 0 abcd, 1 cdab, 2 badc, 3 dcba, and 4 ba, 5 ab for single registers. Its
+#: `data_type` enum, likewise: 0 boolean, 1 uint16, 2 int16, 3 uint32,
+#: 4 int32, 5 float.
+BYTE_SWAP_CODES: dict[int, str] = {0: "ABCD", 1: "CDAB", 2: "BADC", 3: "DCBA"}
 #: The order each word of an exact pair is read in.
 EXACT_ORDER_FOR_WORD: dict[int, str] = {0: "CDAB", 1: "BADC"}
 
@@ -338,27 +340,23 @@ SKIP_KEYS: frozenset[str] = frozenset(
 #: Polling period per register, in seconds. The controller publishes a channel
 #: only when its value changes, so this is how quickly a change shows up, not
 #: how often Home Assistant hears from it.
-PERIOD_COMMAND = 10      # what a button press changes: functions, level, mode
+PERIOD_COMMAND = 10      # what a button press changes: the level, the mode bits
+PERIOD_TIMER = 20        # the function countdowns, which move every second
 PERIOD_LIVE = 30         # measurements
 PERIOD_SETTING = 60      # setpoints and feature switches
 PERIOD_STATIC = 600      # identity, fitted peripherals, configuration
 
-_COMMAND_KEYS = frozenset(
-    {
-        "ventilation",
-        "boost_timer",
-        "circulation_timer",
-        "overpressure_timer",
-        "night_timer",
-        "party_timer",
-        "mode_bits",
-    }
+_COMMAND_KEYS = frozenset({"ventilation", "mode_bits"})
+_TIMER_KEYS = frozenset(
+    {"boost_timer", "circulation_timer", "overpressure_timer", "night_timer", "party_timer"}
 )
 
 
 def period_for(reg: Reg) -> int:
     if reg.key in _COMMAND_KEYS:
         return PERIOD_COMMAND
+    if reg.key in _TIMER_KEYS:
+        return PERIOD_TIMER
     if reg.table is Table.HOLDING:
         if reg.key.startswith(("ext_sensor_", "ext_button_")):
             if reg.key.endswith("_present"):

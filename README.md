@@ -29,13 +29,21 @@ Futura  ──Modbus──  i3 controller  ──MQTT──  Home Assistant
                       per register)         /devices/<client>/commands/<DEV>/<type>/<n>/set
 ```
 
-- **One channel per register.** An `mb_u16` channel for each; a 32-bit
-  register's channel has data type 3, so it reads both words in one request
-  (the unit refuses a read that splits one, so a u32 is never two channels).
-  `mb_u32` channels are understood too, but a Hydrogen N accepts them in the
-  app and never reads them, so the tool does not create them. Input registers
-  use register type 1 (read), holding registers type 8 (read, and write on
-  command).
+- **One channel per register.** Input registers use register type 1 (read),
+  holding registers type 8 (read, and write on command).
+- **32-bit registers need care.** The unit refuses a read that splits one, so a
+  channel must read both words in one request: an `mb_u16` channel with data
+  type 3 (uint32) does. But a Hydrogen N then holds the assembled value as a
+  32-bit float and publishes only its low 16 bits, so each such channel delivers
+  one word, chosen by its byte order, and only while the value fits 24 bits.
+  Two channels per register are exact whenever the high word stays below 256:
+  CDAB for the low word, BADC for the (byte-swapped) high word. That covers the
+  mode, error and warning bitfields, the wall sensor mask and the hardware
+  revision. The firmware and the valve masks are wider and do not change on a
+  running unit: they keep the value last known — taken from the Modbus
+  integration when it is replaced. The away times are not bridged.
+  `tests/test_hydrogen.py` models the controller and holds the model to twelve
+  readings taken on a real unit.
 - **The map comes from the i3 app backup.** Setup takes the backup file and
   reads which channel carries which register from it. Nothing has to be typed.
 - **The controller publishes only on change, and retains nothing.** A register
@@ -43,9 +51,10 @@ Futura  ──Modbus──  i3 controller  ──MQTT──  Home Assistant
   once after the controller boots. So the integration keeps every register word
   it has seen in Home Assistant's storage, and a restart shows the last known
   values rather than `unknown`.
-- **32-bit word order is learned.** The controller builds an `mb_u32` value in
-  an order of its own. The Futura's firmware register carries a constant 9999 in
-  its high word, which settles it on first sight; the serial number confirms it.
+- **On a controller that publishes 32-bit values whole**, the word order is
+  learned: the Futura's firmware register carries a constant 9999 in its high
+  word, and the registers that never change are compared with their last known
+  values.
 - **Liveness** comes from the controller's uptime heartbeat (about once a
   minute). A silent controller, or one whose every read of the unit fails, takes
   the entities unavailable. A single failed read leaves only that value unknown.
@@ -136,11 +145,14 @@ repository's README for the card reference and the design tokens.
 ## Known limitations
 
 - **The controller's channel limit is not documented.** A unit with four external
-  sensor slots in use needs about 87 channels on one controller. Check that the
+  sensor slots in use needs about 86 channels on one controller. Check that the
   app accepts them before relying on it.
 - **Bus load.** Each channel is one request per period: the defaults (10 s for
-  what a button changes, 30 s for measurements, 60 s for settings, 600 s for
-  identity and fitted peripherals) come to about two requests a second.
+  the level and mode bits, 20 s for the function timers, 30 s for
+  measurements, 60 s for settings, 600 s for identity and fitted peripherals)
+  come to about two requests a second.
+- **The away period is not shown or settable** through a Hydrogen N: its
+  timestamps are too wide for the float the controller rounds through.
 - **One 32-bit word order per controller.** It is learned from the first
   32-bit channel that publishes the firmware or serial register, and applied
   to all of them. That needs the controller to publish those channels at least
