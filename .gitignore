@@ -1,0 +1,14 @@
+
+__pycache__/
+.pytest_cache/
+.venv/
+*.py[cod]
+dev-config/
+node_modules/
+.ruff_cache/
+# Local dashboard snapshots taken before edits
+.backups/
+# Editor and OS files
+.idea/
+*.iml
+.DS_Store

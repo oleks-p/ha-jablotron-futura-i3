@@ -1,0 +1,3319 @@
+{
+ "devices": [
+  {
+   "connections": [
+    [
+     "mac",
+     "00:13:b0:00:00:01"
+    ]
+   ],
+   "hw_version": "131238",
+   "manufacturer": "Jablotron",
+   "model": "Futura L",
+   "name": "Jablotron Futura",
+   "serial_number": "4200000000",
+   "sw_version": "FUA.P.07.20"
+  }
+ ],
+ "entities": [
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Antifreeze active"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_antifreeze_active",
+   "icon": null,
+   "original_name": "Antifreeze active",
+   "state": "off",
+   "translation_key": "mode_antifreeze_active",
+   "unique_id": "4200000000_mode_antifreeze_active",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Antiradon active",
+    "icon": "mdi:radioactive"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_antiradon_active",
+   "icon": "mdi:radioactive",
+   "original_name": "Antiradon active",
+   "state": "on",
+   "translation_key": "mode_antiradon_active",
+   "unique_id": "4200000000_mode_antiradon_active",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Away active",
+    "icon": "mdi:bag-suitcase"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_away_active",
+   "icon": "mdi:bag-suitcase",
+   "original_name": "Away active",
+   "state": "off",
+   "translation_key": "mode_away_active",
+   "unique_id": "4200000000_mode_away_active",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Boost active",
+    "icon": "mdi:fan-plus"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_boost_active",
+   "icon": "mdi:fan-plus",
+   "original_name": "Boost active",
+   "state": "off",
+   "translation_key": "mode_boost_active",
+   "unique_id": "4200000000_mode_boost_active",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Bypass open",
+    "icon": "mdi:air-filter"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_bypass_open",
+   "icon": "mdi:air-filter",
+   "original_name": "Bypass open",
+   "state": "off",
+   "translation_key": "mode_bypass_open",
+   "unique_id": "4200000000_mode_bypass_open",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Circulation active",
+    "icon": "mdi:autorenew"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_circulation_active",
+   "icon": "mdi:autorenew",
+   "original_name": "Circulation active",
+   "state": "off",
+   "translation_key": "mode_circulation_active",
+   "unique_id": "4200000000_mode_circulation_active",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Device on",
+    "icon": "mdi:power"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_device_on",
+   "icon": "mdi:power",
+   "original_name": "Device on",
+   "state": "on",
+   "translation_key": "mode_device_on",
+   "unique_id": "4200000000_mode_device_on",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Drying running"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_drying_running",
+   "icon": null,
+   "original_name": "Drying running",
+   "state": "off",
+   "translation_key": "mode_drying_running",
+   "unique_id": "4200000000_mode_drying_running",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Emergency stop"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_emergency_stop",
+   "icon": null,
+   "original_name": "Emergency stop",
+   "state": "off",
+   "translation_key": "mode_emergency_stop",
+   "unique_id": "4200000000_mode_emergency_stop",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_error_coolbreeze_communication",
+   "icon": null,
+   "original_name": "Error: coolbreeze communication",
+   "state": null,
+   "translation_key": "error_coolbreeze_communication",
+   "unique_id": "4200000000_error_coolbreeze_communication",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_error_coolbreeze_outdoor_unit",
+   "icon": null,
+   "original_name": "Error: coolbreeze outdoor unit",
+   "state": null,
+   "translation_key": "error_coolbreeze_outdoor_unit",
+   "unique_id": "4200000000_error_coolbreeze_outdoor_unit",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_error_exchanger_communication",
+   "icon": null,
+   "original_name": "Error: exchanger communication",
+   "state": null,
+   "translation_key": "error_exchanger_communication",
+   "unique_id": "4200000000_error_exchanger_communication",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_error_exchanger_damper_position",
+   "icon": null,
+   "original_name": "Error: exchanger damper position",
+   "state": null,
+   "translation_key": "error_exchanger_damper_position",
+   "unique_id": "4200000000_error_exchanger_damper_position",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_error_fan_exhaust",
+   "icon": null,
+   "original_name": "Error: fan exhaust",
+   "state": null,
+   "translation_key": "error_fan_exhaust",
+   "unique_id": "4200000000_error_fan_exhaust",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_error_fan_exhaust_blocked",
+   "icon": null,
+   "original_name": "Error: fan exhaust blocked",
+   "state": null,
+   "translation_key": "error_fan_exhaust_blocked",
+   "unique_id": "4200000000_error_fan_exhaust_blocked",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_error_fan_supply",
+   "icon": null,
+   "original_name": "Error: fan supply",
+   "state": null,
+   "translation_key": "error_fan_supply",
+   "unique_id": "4200000000_error_fan_supply",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_error_fan_supply_blocked",
+   "icon": null,
+   "original_name": "Error: fan supply blocked",
+   "state": null,
+   "translation_key": "error_fan_supply_blocked",
+   "unique_id": "4200000000_error_fan_supply_blocked",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_error_io_board_communication",
+   "icon": null,
+   "original_name": "Error: io board communication",
+   "state": null,
+   "translation_key": "error_io_board_communication",
+   "unique_id": "4200000000_error_io_board_communication",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_error_sensor_ambient",
+   "icon": null,
+   "original_name": "Error: sensor ambient",
+   "state": null,
+   "translation_key": "error_sensor_ambient",
+   "unique_id": "4200000000_error_sensor_ambient",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_error_sensor_fresh",
+   "icon": null,
+   "original_name": "Error: sensor fresh",
+   "state": null,
+   "translation_key": "error_sensor_fresh",
+   "unique_id": "4200000000_error_sensor_fresh",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_error_sensor_indoor",
+   "icon": null,
+   "original_name": "Error: sensor indoor",
+   "state": null,
+   "translation_key": "error_sensor_indoor",
+   "unique_id": "4200000000_error_sensor_indoor",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_error_sensor_waste",
+   "icon": null,
+   "original_name": "Error: sensor waste",
+   "state": null,
+   "translation_key": "error_sensor_waste",
+   "unique_id": "4200000000_error_sensor_waste",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "problem",
+    "friendly_name": "Jablotron Futura Fault"
+   },
+   "device_class": "problem",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_fault",
+   "icon": null,
+   "original_name": "Fault",
+   "state": "off",
+   "translation_key": "any_error",
+   "unique_id": "4200000000_any_error",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Filter check running"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_filter_check_running",
+   "icon": null,
+   "original_name": "Filter check running",
+   "state": "off",
+   "translation_key": "mode_filter_check_running",
+   "unique_id": "4200000000_mode_filter_check_running",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "binary_sensor.jablotron_futura_input_boost_input",
+   "icon": null,
+   "original_name": "Input boost input",
+   "state": null,
+   "translation_key": "input_boost_input",
+   "unique_id": "4200000000_input_boost_input",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "binary_sensor.jablotron_futura_input_factory_button",
+   "icon": null,
+   "original_name": "Input factory button",
+   "state": null,
+   "translation_key": "input_factory_button",
+   "unique_id": "4200000000_input_factory_button",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "binary_sensor.jablotron_futura_input_uin1",
+   "icon": null,
+   "original_name": "Input uin1",
+   "state": null,
+   "translation_key": "input_uin1",
+   "unique_id": "4200000000_input_uin1",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "binary_sensor.jablotron_futura_input_uin2",
+   "icon": null,
+   "original_name": "Input uin2",
+   "state": null,
+   "translation_key": "input_uin2",
+   "unique_id": "4200000000_input_uin2",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "binary_sensor.jablotron_futura_input_user_button",
+   "icon": null,
+   "original_name": "Input user button",
+   "state": null,
+   "translation_key": "input_user_button",
+   "unique_id": "4200000000_input_user_button",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Low outdoor temp limit"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_low_outdoor_temp_limit",
+   "icon": null,
+   "original_name": "Low outdoor temp limit",
+   "state": "off",
+   "translation_key": "mode_low_outdoor_temp_limit",
+   "unique_id": "4200000000_mode_low_outdoor_temp_limit",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Night active",
+    "icon": "mdi:weather-night"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_night_active",
+   "icon": "mdi:weather-night",
+   "original_name": "Night active",
+   "state": "off",
+   "translation_key": "mode_night_active",
+   "unique_id": "4200000000_mode_night_active",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Overpressure active",
+    "icon": "mdi:weather-windy"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_overpressure_active",
+   "icon": "mdi:weather-windy",
+   "original_name": "Overpressure active",
+   "state": "off",
+   "translation_key": "mode_overpressure_active",
+   "unique_id": "4200000000_mode_overpressure_active",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Party active",
+    "icon": "mdi:glass-cocktail"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_party_active",
+   "icon": "mdi:glass-cocktail",
+   "original_name": "Party active",
+   "state": "off",
+   "translation_key": "mode_party_active",
+   "unique_id": "4200000000_mode_party_active",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Pressure loss measurement"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_pressure_loss_measurement",
+   "icon": null,
+   "original_name": "Pressure loss measurement",
+   "state": "off",
+   "translation_key": "mode_pressure_loss_measurement",
+   "unique_id": "4200000000_mode_pressure_loss_measurement",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Service mode"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_service_mode",
+   "icon": null,
+   "original_name": "Service mode",
+   "state": "off",
+   "translation_key": "mode_service_mode",
+   "unique_id": "4200000000_mode_service_mode",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Standby",
+    "icon": "mdi:power-standby"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_standby",
+   "icon": "mdi:power-standby",
+   "original_name": "Standby",
+   "state": "off",
+   "translation_key": "mode_standby",
+   "unique_id": "4200000000_mode_standby",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Starting up"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_starting_up",
+   "icon": null,
+   "original_name": "Starting up",
+   "state": "off",
+   "translation_key": "mode_starting_up",
+   "unique_id": "4200000000_mode_starting_up",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Stopped after error"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_stopped_after_error",
+   "icon": null,
+   "original_name": "Stopped after error",
+   "state": "off",
+   "translation_key": "mode_stopped_after_error",
+   "unique_id": "4200000000_mode_stopped_after_error",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "binary_sensor.jablotron_futura_supports_bypass",
+   "icon": null,
+   "original_name": "Supports bypass",
+   "state": null,
+   "translation_key": "config_bypass",
+   "unique_id": "4200000000_config_bypass",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "binary_sensor.jablotron_futura_supports_coolbreeze",
+   "icon": null,
+   "original_name": "Supports coolbreeze",
+   "state": null,
+   "translation_key": "config_coolbreeze",
+   "unique_id": "4200000000_config_coolbreeze",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "binary_sensor.jablotron_futura_supports_coolbreeze_cooling",
+   "icon": null,
+   "original_name": "Supports coolbreeze cooling",
+   "state": null,
+   "translation_key": "config_coolbreeze_cooling",
+   "unique_id": "4200000000_config_coolbreeze_cooling",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "binary_sensor.jablotron_futura_supports_coolbreeze_heating",
+   "icon": null,
+   "original_name": "Supports coolbreeze heating",
+   "state": null,
+   "translation_key": "config_coolbreeze_heating",
+   "unique_id": "4200000000_config_coolbreeze_heating",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "binary_sensor.jablotron_futura_supports_exchanger_control",
+   "icon": null,
+   "original_name": "Supports exchanger control",
+   "state": null,
+   "translation_key": "config_exchanger_control",
+   "unique_id": "4200000000_config_exchanger_control",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "binary_sensor.jablotron_futura_supports_inner_circulation",
+   "icon": null,
+   "original_name": "Supports inner circulation",
+   "state": null,
+   "translation_key": "config_inner_circulation",
+   "unique_id": "4200000000_config_inner_circulation",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "binary_sensor.jablotron_futura_supports_internal_heating",
+   "icon": null,
+   "original_name": "Supports internal heating",
+   "state": null,
+   "translation_key": "config_internal_heating",
+   "unique_id": "4200000000_config_internal_heating",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "binary_sensor.jablotron_futura_supports_variobreeze",
+   "icon": null,
+   "original_name": "Supports variobreeze",
+   "state": null,
+   "translation_key": "config_variobreeze",
+   "unique_id": "4200000000_config_variobreeze",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Time program active",
+    "icon": "mdi:calendar-clock"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_time_program_active",
+   "icon": "mdi:calendar-clock",
+   "original_name": "Time program active",
+   "state": "on",
+   "translation_key": "mode_time_program_active",
+   "unique_id": "4200000000_mode_time_program_active",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "problem",
+    "friendly_name": "Jablotron Futura Warning"
+   },
+   "device_class": "problem",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_warning",
+   "icon": null,
+   "original_name": "Warning",
+   "state": "off",
+   "translation_key": "any_warning",
+   "unique_id": "4200000000_any_warning",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_warning_emergency_stop",
+   "icon": null,
+   "original_name": "Warning: emergency stop",
+   "state": null,
+   "translation_key": "warning_emergency_stop",
+   "unique_id": "4200000000_warning_emergency_stop",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_warning_fan_exhaust_overspeed",
+   "icon": null,
+   "original_name": "Warning: fan exhaust overspeed",
+   "state": null,
+   "translation_key": "warning_fan_exhaust_overspeed",
+   "unique_id": "4200000000_warning_fan_exhaust_overspeed",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_warning_fan_supply_overspeed",
+   "icon": null,
+   "original_name": "Warning: fan supply overspeed",
+   "state": null,
+   "translation_key": "warning_fan_supply_overspeed",
+   "unique_id": "4200000000_warning_fan_supply_overspeed",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_warning_filter_too_dirty",
+   "icon": null,
+   "original_name": "Warning: filter too dirty",
+   "state": null,
+   "translation_key": "warning_filter_too_dirty",
+   "unique_id": "4200000000_warning_filter_too_dirty",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_warning_filter_uninitialised",
+   "icon": null,
+   "original_name": "Warning: filter uninitialised",
+   "state": null,
+   "translation_key": "warning_filter_uninitialised",
+   "unique_id": "4200000000_warning_filter_uninitialised",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_warning_filter_used_too_long",
+   "icon": null,
+   "original_name": "Warning: filter used too long",
+   "state": null,
+   "translation_key": "warning_filter_used_too_long",
+   "unique_id": "4200000000_warning_filter_used_too_long",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_warning_outdoor_temp_too_low",
+   "icon": null,
+   "original_name": "Warning: outdoor temp too low",
+   "state": null,
+   "translation_key": "warning_outdoor_temp_too_low",
+   "unique_id": "4200000000_warning_outdoor_temp_too_low",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_warning_rtc_battery_low",
+   "icon": null,
+   "original_name": "Warning: rtc battery low",
+   "state": null,
+   "translation_key": "warning_rtc_battery_low",
+   "unique_id": "4200000000_warning_rtc_battery_low",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_warning_superbreeze_communication",
+   "icon": null,
+   "original_name": "Warning: superbreeze communication",
+   "state": null,
+   "translation_key": "warning_superbreeze_communication",
+   "unique_id": "4200000000_warning_superbreeze_communication",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_warning_superbreeze_general",
+   "icon": null,
+   "original_name": "Warning: superbreeze general",
+   "state": null,
+   "translation_key": "warning_superbreeze_general",
+   "unique_id": "4200000000_warning_superbreeze_general",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_warning_zone_config_exhaust",
+   "icon": null,
+   "original_name": "Warning: zone config exhaust",
+   "state": null,
+   "translation_key": "warning_zone_config_exhaust",
+   "unique_id": "4200000000_warning_zone_config_exhaust",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": "problem",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_warning_zone_config_supply",
+   "icon": null,
+   "original_name": "Warning: zone config supply",
+   "state": null,
+   "translation_key": "warning_zone_config_supply",
+   "unique_id": "4200000000_warning_zone_config_supply",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Waste air below minus three"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_waste_air_below_minus_three",
+   "icon": null,
+   "original_name": "Waste air below minus three",
+   "state": "off",
+   "translation_key": "mode_waste_air_below_minus_three",
+   "unique_id": "4200000000_mode_waste_air_below_minus_three",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Zone boost",
+    "icon": "mdi:fan-speed-3"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_zone_boost",
+   "icon": "mdi:fan-speed-3",
+   "original_name": "Zone boost",
+   "state": "off",
+   "translation_key": "mode_zone_boost",
+   "unique_id": "4200000000_mode_zone_boost",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Zone pressure loss measurement"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "binary_sensor.jablotron_futura_zone_pressure_loss_measurement",
+   "icon": null,
+   "original_name": "Zone pressure loss measurement",
+   "state": "off",
+   "translation_key": "mode_zone_pressure_loss_measurement",
+   "unique_id": "4200000000_mode_zone_pressure_loss_measurement",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Boost 30 minutes",
+    "icon": "mdi:fan-plus"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "button.jablotron_futura_boost_30_minutes",
+   "icon": "mdi:fan-plus",
+   "original_name": "Boost 30 minutes",
+   "state": "unknown",
+   "translation_key": "boost_30",
+   "unique_id": "4200000000_boost_30",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Boost 60 minutes",
+    "icon": "mdi:fan-plus"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "button.jablotron_futura_boost_60_minutes",
+   "icon": "mdi:fan-plus",
+   "original_name": "Boost 60 minutes",
+   "state": "unknown",
+   "translation_key": "boost_60",
+   "unique_id": "4200000000_boost_60",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Circulation 30 minutes",
+    "icon": "mdi:autorenew"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "button.jablotron_futura_circulation_30_minutes",
+   "icon": "mdi:autorenew",
+   "original_name": "Circulation 30 minutes",
+   "state": "unknown",
+   "translation_key": "circulation_30",
+   "unique_id": "4200000000_circulation_30",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Circulation 60 minutes",
+    "icon": "mdi:autorenew"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "button.jablotron_futura_circulation_60_minutes",
+   "icon": "mdi:autorenew",
+   "original_name": "Circulation 60 minutes",
+   "state": "unknown",
+   "translation_key": "circulation_60",
+   "unique_id": "4200000000_circulation_60",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Night mode 8 hours",
+    "icon": "mdi:weather-night"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "button.jablotron_futura_night_mode_8_hours",
+   "icon": "mdi:weather-night",
+   "original_name": "Night mode 8 hours",
+   "state": "unknown",
+   "translation_key": "night_8h",
+   "unique_id": "4200000000_night_8h",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Overpressure 15 minutes",
+    "icon": "mdi:weather-windy"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "button.jablotron_futura_overpressure_15_minutes",
+   "icon": "mdi:weather-windy",
+   "original_name": "Overpressure 15 minutes",
+   "state": "unknown",
+   "translation_key": "overpressure_15",
+   "unique_id": "4200000000_overpressure_15",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Party 4 hours",
+    "icon": "mdi:glass-cocktail"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "button.jablotron_futura_party_4_hours",
+   "icon": "mdi:glass-cocktail",
+   "original_name": "Party 4 hours",
+   "state": "unknown",
+   "translation_key": "party_4h",
+   "unique_id": "4200000000_party_4h",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Stop all functions",
+    "icon": "mdi:stop-circle-outline"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "button.jablotron_futura_stop_all_functions",
+   "icon": "mdi:stop-circle-outline",
+   "original_name": "Stop all functions",
+   "state": "unknown",
+   "translation_key": "stop_all",
+   "unique_id": "4200000000_stop_all",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "current_humidity": 48,
+    "current_temperature": 24.9,
+    "fan_mode": "auto",
+    "fan_modes": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "auto"
+    ],
+    "friendly_name": "Jablotron Futura",
+    "hvac_modes": [
+     "off",
+     "heat",
+     "cool",
+     "fan_only"
+    ],
+    "max_temp": 28.0,
+    "min_temp": 16.0,
+    "supported_features": 9,
+    "target_temp_step": 0.5,
+    "temperature": 24.0
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "climate.jablotron_futura",
+   "icon": null,
+   "original_name": null,
+   "state": "cool",
+   "translation_key": null,
+   "unique_id": "4200000000_climate",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura",
+    "icon": "mdi:hvac",
+    "percentage": 82,
+    "percentage_step": 20.0,
+    "preset_mode": "auto",
+    "preset_modes": [
+     "auto"
+    ],
+    "supported_features": 57
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "fan.jablotron_futura",
+   "icon": "mdi:hvac",
+   "original_name": null,
+   "state": "on",
+   "translation_key": null,
+   "unique_id": "4200000000_ventilation",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "duration",
+    "friendly_name": "Jablotron Futura Boost remaining",
+    "max": 7200,
+    "min": 0,
+    "mode": "box",
+    "step": 60,
+    "unit_of_measurement": "s"
+   },
+   "device_class": "duration",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "number.jablotron_futura_boost_remaining",
+   "icon": null,
+   "original_name": "Boost remaining",
+   "state": "0",
+   "translation_key": "boost_timer",
+   "unique_id": "4200000000_boost_timer",
+   "unit": "s"
+  },
+  {
+   "attributes": {
+    "device_class": "duration",
+    "friendly_name": "Jablotron Futura Circulation remaining",
+    "max": 7200,
+    "min": 0,
+    "mode": "box",
+    "step": 60,
+    "unit_of_measurement": "s"
+   },
+   "device_class": "duration",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "number.jablotron_futura_circulation_remaining",
+   "icon": null,
+   "original_name": "Circulation remaining",
+   "state": "0",
+   "translation_key": "circulation_timer",
+   "unique_id": "4200000000_circulation_timer",
+   "unit": "s"
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Kitchen hood volume",
+    "max": 150,
+    "min": 50,
+    "mode": "box",
+    "step": 10,
+    "unit_of_measurement": "m\u00b3/h"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": "config",
+   "entity_id": "number.jablotron_futura_kitchen_hood_volume",
+   "icon": null,
+   "original_name": "Kitchen hood volume",
+   "state": "120",
+   "translation_key": "kitchenhood_volume",
+   "unique_id": "4200000000_kitchenhood_volume",
+   "unit": "m\u00b3/h"
+  },
+  {
+   "attributes": {
+    "device_class": "duration",
+    "friendly_name": "Jablotron Futura Night mode remaining",
+    "max": 36000,
+    "min": 0,
+    "mode": "box",
+    "step": 60,
+    "unit_of_measurement": "s"
+   },
+   "device_class": "duration",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "number.jablotron_futura_night_mode_remaining",
+   "icon": null,
+   "original_name": "Night mode remaining",
+   "state": "0",
+   "translation_key": "night_timer",
+   "unique_id": "4200000000_night_timer",
+   "unit": "s"
+  },
+  {
+   "attributes": {
+    "device_class": "duration",
+    "friendly_name": "Jablotron Futura Overpressure remaining",
+    "max": 7200,
+    "min": 0,
+    "mode": "box",
+    "step": 60,
+    "unit_of_measurement": "s"
+   },
+   "device_class": "duration",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "number.jablotron_futura_overpressure_remaining",
+   "icon": null,
+   "original_name": "Overpressure remaining",
+   "state": "0",
+   "translation_key": "overpressure_timer",
+   "unique_id": "4200000000_overpressure_timer",
+   "unit": "s"
+  },
+  {
+   "attributes": {
+    "device_class": "duration",
+    "friendly_name": "Jablotron Futura Party mode remaining",
+    "max": 36000,
+    "min": 0,
+    "mode": "box",
+    "step": 60,
+    "unit_of_measurement": "s"
+   },
+   "device_class": "duration",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "number.jablotron_futura_party_mode_remaining",
+   "icon": null,
+   "original_name": "Party mode remaining",
+   "state": "0",
+   "translation_key": "party_timer",
+   "unique_id": "4200000000_party_timer",
+   "unit": "s"
+  },
+  {
+   "attributes": {
+    "device_class": "temperature",
+    "friendly_name": "Jablotron Futura Target temperature",
+    "max": 28.0,
+    "min": 16.0,
+    "mode": "box",
+    "step": 0.5,
+    "unit_of_measurement": "\u00b0C"
+   },
+   "device_class": "temperature",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "number.jablotron_futura_target_temperature",
+   "icon": null,
+   "original_name": "Target temperature",
+   "state": "24.0",
+   "translation_key": "temperature_setpoint",
+   "unique_id": "4200000000_temperature_setpoint",
+   "unit": "\u00b0C"
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Zone boost volume",
+    "max": 150,
+    "min": 50,
+    "mode": "box",
+    "step": 10,
+    "unit_of_measurement": "m\u00b3/h"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": "config",
+   "entity_id": "number.jablotron_futura_zone_boost_volume",
+   "icon": null,
+   "original_name": "Zone boost volume",
+   "state": "50",
+   "translation_key": "zone_boost_volume",
+   "unique_id": "4200000000_zone_boost_volume",
+   "unit": "m\u00b3/h"
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Humidity mode",
+    "icon": "mdi:water-percent",
+    "options": [
+     "dry",
+     "comfort",
+     "wet"
+    ]
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "select.jablotron_futura_humidity_mode",
+   "icon": "mdi:water-percent",
+   "original_name": "Humidity mode",
+   "state": "comfort",
+   "translation_key": "humidity_mode",
+   "unique_id": "4200000000_humidity_mode",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Schematic",
+    "icon": "mdi:vector-square",
+    "options": [
+     "flow",
+     "unit",
+     "service",
+     "diagram"
+    ]
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": "config",
+   "entity_id": "select.jablotron_futura_schematic",
+   "icon": "mdi:vector-square",
+   "original_name": "Schematic",
+   "state": "flow",
+   "translation_key": "schematic",
+   "unique_id": "4200000000_schematic",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Ventilation",
+    "icon": "mdi:fan",
+    "options": [
+     "off",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "auto"
+    ]
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "select.jablotron_futura_ventilation",
+   "icon": "mdi:fan",
+   "original_name": "Ventilation",
+   "state": "auto",
+   "translation_key": "ventilation_mode",
+   "unique_id": "4200000000_ventilation_select",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Zone auto priority",
+    "icon": "mdi:priority-high",
+    "options": [
+     "temperature",
+     "co2"
+    ]
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": "config",
+   "entity_id": "select.jablotron_futura_zone_auto_priority",
+   "icon": "mdi:priority-high",
+   "original_name": "Zone auto priority",
+   "state": "co2",
+   "translation_key": "zone_priority",
+   "unique_id": "4200000000_zone_priority_select",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Air flow",
+    "state_class": "measurement",
+    "unit_of_measurement": "m\u00b3/h"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_air_flow",
+   "icon": null,
+   "original_name": "Air flow",
+   "state": "366",
+   "translation_key": "air_flow",
+   "unique_id": "4200000000_air_flow",
+   "unit": "m\u00b3/h"
+  },
+  {
+   "attributes": {
+    "device_class": "enum",
+    "friendly_name": "Jablotron Futura Air quality",
+    "icon": "mdi:leaf",
+    "options": [
+     "good",
+     "moderate",
+     "poor"
+    ]
+   },
+   "device_class": "enum",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_air_quality",
+   "icon": "mdi:leaf",
+   "original_name": "Air quality",
+   "state": "moderate",
+   "translation_key": "air_quality",
+   "unique_id": "4200000000_air_quality",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_alfa_1_bus_address",
+   "icon": null,
+   "original_name": "ALFA 1 bus address",
+   "state": null,
+   "translation_key": "alfa_1_address",
+   "unique_id": "4200000000_alfa_1_address",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "carbon_dioxide",
+    "friendly_name": "Jablotron Futura ALFA 1 CO2",
+    "state_class": "measurement",
+    "unit_of_measurement": "ppm"
+   },
+   "device_class": "carbon_dioxide",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_alfa_1_co2",
+   "icon": null,
+   "original_name": "ALFA 1 CO2",
+   "state": "474",
+   "translation_key": "alfa_1_co2",
+   "unique_id": "4200000000_alfa_1_co2",
+   "unit": "ppm"
+  },
+  {
+   "attributes": {
+    "device_class": "humidity",
+    "friendly_name": "Jablotron Futura ALFA 1 humidity",
+    "state_class": "measurement",
+    "unit_of_measurement": "%"
+   },
+   "device_class": "humidity",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_alfa_1_humidity",
+   "icon": null,
+   "original_name": "ALFA 1 humidity",
+   "state": "45.0",
+   "translation_key": "alfa_1_humidity",
+   "unique_id": "4200000000_alfa_1_humidity",
+   "unit": "%"
+  },
+  {
+   "attributes": {},
+   "device_class": "temperature",
+   "disabled": true,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_alfa_1_ntc_temperature",
+   "icon": null,
+   "original_name": "ALFA 1 NTC temperature",
+   "state": null,
+   "translation_key": "alfa_1_ntc_temperature",
+   "unique_id": "4200000000_alfa_1_ntc_temperature",
+   "unit": "\u00b0C"
+  },
+  {
+   "attributes": {
+    "device_class": "temperature",
+    "friendly_name": "Jablotron Futura ALFA 1 temperature",
+    "state_class": "measurement",
+    "unit_of_measurement": "\u00b0C"
+   },
+   "device_class": "temperature",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_alfa_1_temperature",
+   "icon": null,
+   "original_name": "ALFA 1 temperature",
+   "state": "26.3",
+   "translation_key": "alfa_1_temperature",
+   "unique_id": "4200000000_alfa_1_temperature",
+   "unit": "\u00b0C"
+  },
+  {
+   "attributes": {
+    "device_class": "timestamp",
+    "friendly_name": "Jablotron Futura Away begins",
+    "icon": "mdi:bag-suitcase"
+   },
+   "device_class": "timestamp",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_away_begins",
+   "icon": "mdi:bag-suitcase",
+   "original_name": "Away begins",
+   "state": "2025-10-22T15:08:17+00:00",
+   "translation_key": "away_begin_at",
+   "unique_id": "4200000000_away_begin_at",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "timestamp",
+    "friendly_name": "Jablotron Futura Away ends",
+    "icon": "mdi:bag-suitcase-off"
+   },
+   "device_class": "timestamp",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_away_ends",
+   "icon": "mdi:bag-suitcase-off",
+   "original_name": "Away ends",
+   "state": "2025-10-22T15:08:17+00:00",
+   "translation_key": "away_end_at",
+   "unique_id": "4200000000_away_end_at",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Boost buttons",
+    "icon": "mdi:gesture-tap-button",
+    "slots": [
+     1,
+     2,
+     3
+    ]
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_boost_buttons",
+   "icon": "mdi:gesture-tap-button",
+   "original_name": "Boost buttons",
+   "state": "3",
+   "translation_key": "boost_button_count",
+   "unique_id": "4200000000_boost_button_count",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "duration",
+    "friendly_name": "Jablotron Futura Boost remaining",
+    "unit_of_measurement": "s"
+   },
+   "device_class": "duration",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_boost_remaining",
+   "icon": null,
+   "original_name": "Boost remaining",
+   "state": "0",
+   "translation_key": "boost_timer",
+   "unique_id": "4200000000_boost_timer",
+   "unit": "s"
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_build_number",
+   "icon": null,
+   "original_name": "Build number",
+   "state": null,
+   "translation_key": "build_number",
+   "unique_id": "4200000000_build_number",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "duration",
+    "friendly_name": "Jablotron Futura Circulation remaining",
+    "unit_of_measurement": "s"
+   },
+   "device_class": "duration",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_circulation_remaining",
+   "icon": null,
+   "original_name": "Circulation remaining",
+   "state": "0",
+   "translation_key": "circulation_timer",
+   "unique_id": "4200000000_circulation_timer",
+   "unit": "s"
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_co2_sensor_2_bus_address",
+   "icon": null,
+   "original_name": "CO2 sensor 2 bus address",
+   "state": null,
+   "translation_key": "wall_sensor_2_address",
+   "unique_id": "4200000000_wall_sensor_2_address",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "carbon_dioxide",
+    "friendly_name": "Jablotron Futura CO2 sensor 2 CO2",
+    "state_class": "measurement",
+    "unit_of_measurement": "ppm"
+   },
+   "device_class": "carbon_dioxide",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_co2_sensor_2_co2",
+   "icon": null,
+   "original_name": "CO2 sensor 2 CO2",
+   "state": "573",
+   "translation_key": "wall_sensor_2_co2",
+   "unique_id": "4200000000_wall_sensor_2_co2",
+   "unit": "ppm"
+  },
+  {
+   "attributes": {
+    "device_class": "humidity",
+    "friendly_name": "Jablotron Futura CO2 sensor 2 humidity",
+    "state_class": "measurement",
+    "unit_of_measurement": "%"
+   },
+   "device_class": "humidity",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_co2_sensor_2_humidity",
+   "icon": null,
+   "original_name": "CO2 sensor 2 humidity",
+   "state": "48.3",
+   "translation_key": "wall_sensor_2_humidity",
+   "unique_id": "4200000000_wall_sensor_2_humidity",
+   "unit": "%"
+  },
+  {
+   "attributes": {
+    "device_class": "temperature",
+    "friendly_name": "Jablotron Futura CO2 sensor 2 temperature",
+    "state_class": "measurement",
+    "unit_of_measurement": "\u00b0C"
+   },
+   "device_class": "temperature",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_co2_sensor_2_temperature",
+   "icon": null,
+   "original_name": "CO2 sensor 2 temperature",
+   "state": "24.5",
+   "translation_key": "wall_sensor_2_temperature",
+   "unique_id": "4200000000_wall_sensor_2_temperature",
+   "unit": "\u00b0C"
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_co2_sensor_3_bus_address",
+   "icon": null,
+   "original_name": "CO2 sensor 3 bus address",
+   "state": null,
+   "translation_key": "wall_sensor_3_address",
+   "unique_id": "4200000000_wall_sensor_3_address",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "carbon_dioxide",
+    "friendly_name": "Jablotron Futura CO2 sensor 3 CO2",
+    "state_class": "measurement",
+    "unit_of_measurement": "ppm"
+   },
+   "device_class": "carbon_dioxide",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_co2_sensor_3_co2",
+   "icon": null,
+   "original_name": "CO2 sensor 3 CO2",
+   "state": "662",
+   "translation_key": "wall_sensor_3_co2",
+   "unique_id": "4200000000_wall_sensor_3_co2",
+   "unit": "ppm"
+  },
+  {
+   "attributes": {
+    "device_class": "humidity",
+    "friendly_name": "Jablotron Futura CO2 sensor 3 humidity",
+    "state_class": "measurement",
+    "unit_of_measurement": "%"
+   },
+   "device_class": "humidity",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_co2_sensor_3_humidity",
+   "icon": null,
+   "original_name": "CO2 sensor 3 humidity",
+   "state": "50.9",
+   "translation_key": "wall_sensor_3_humidity",
+   "unique_id": "4200000000_wall_sensor_3_humidity",
+   "unit": "%"
+  },
+  {
+   "attributes": {
+    "device_class": "temperature",
+    "friendly_name": "Jablotron Futura CO2 sensor 3 temperature",
+    "state_class": "measurement",
+    "unit_of_measurement": "\u00b0C"
+   },
+   "device_class": "temperature",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_co2_sensor_3_temperature",
+   "icon": null,
+   "original_name": "CO2 sensor 3 temperature",
+   "state": "23.2",
+   "translation_key": "wall_sensor_3_temperature",
+   "unique_id": "4200000000_wall_sensor_3_temperature",
+   "unit": "\u00b0C"
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_co2_sensor_4_bus_address",
+   "icon": null,
+   "original_name": "CO2 sensor 4 bus address",
+   "state": null,
+   "translation_key": "wall_sensor_4_address",
+   "unique_id": "4200000000_wall_sensor_4_address",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "carbon_dioxide",
+    "friendly_name": "Jablotron Futura CO2 sensor 4 CO2",
+    "state_class": "measurement",
+    "unit_of_measurement": "ppm"
+   },
+   "device_class": "carbon_dioxide",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_co2_sensor_4_co2",
+   "icon": null,
+   "original_name": "CO2 sensor 4 CO2",
+   "state": "857",
+   "translation_key": "wall_sensor_4_co2",
+   "unique_id": "4200000000_wall_sensor_4_co2",
+   "unit": "ppm"
+  },
+  {
+   "attributes": {
+    "device_class": "humidity",
+    "friendly_name": "Jablotron Futura CO2 sensor 4 humidity",
+    "state_class": "measurement",
+    "unit_of_measurement": "%"
+   },
+   "device_class": "humidity",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_co2_sensor_4_humidity",
+   "icon": null,
+   "original_name": "CO2 sensor 4 humidity",
+   "state": "51.2",
+   "translation_key": "wall_sensor_4_humidity",
+   "unique_id": "4200000000_wall_sensor_4_humidity",
+   "unit": "%"
+  },
+  {
+   "attributes": {
+    "device_class": "temperature",
+    "friendly_name": "Jablotron Futura CO2 sensor 4 temperature",
+    "state_class": "measurement",
+    "unit_of_measurement": "\u00b0C"
+   },
+   "device_class": "temperature",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_co2_sensor_4_temperature",
+   "icon": null,
+   "original_name": "CO2 sensor 4 temperature",
+   "state": "23.9",
+   "translation_key": "wall_sensor_4_temperature",
+   "unique_id": "4200000000_wall_sensor_4_temperature",
+   "unit": "\u00b0C"
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_co2_sensor_5_bus_address",
+   "icon": null,
+   "original_name": "CO2 sensor 5 bus address",
+   "state": null,
+   "translation_key": "wall_sensor_5_address",
+   "unique_id": "4200000000_wall_sensor_5_address",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "carbon_dioxide",
+    "friendly_name": "Jablotron Futura CO2 sensor 5 CO2",
+    "state_class": "measurement",
+    "unit_of_measurement": "ppm"
+   },
+   "device_class": "carbon_dioxide",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_co2_sensor_5_co2",
+   "icon": null,
+   "original_name": "CO2 sensor 5 CO2",
+   "state": "607",
+   "translation_key": "wall_sensor_5_co2",
+   "unique_id": "4200000000_wall_sensor_5_co2",
+   "unit": "ppm"
+  },
+  {
+   "attributes": {
+    "device_class": "humidity",
+    "friendly_name": "Jablotron Futura CO2 sensor 5 humidity",
+    "state_class": "measurement",
+    "unit_of_measurement": "%"
+   },
+   "device_class": "humidity",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_co2_sensor_5_humidity",
+   "icon": null,
+   "original_name": "CO2 sensor 5 humidity",
+   "state": "47.2",
+   "translation_key": "wall_sensor_5_humidity",
+   "unique_id": "4200000000_wall_sensor_5_humidity",
+   "unit": "%"
+  },
+  {
+   "attributes": {
+    "device_class": "temperature",
+    "friendly_name": "Jablotron Futura CO2 sensor 5 temperature",
+    "state_class": "measurement",
+    "unit_of_measurement": "\u00b0C"
+   },
+   "device_class": "temperature",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_co2_sensor_5_temperature",
+   "icon": null,
+   "original_name": "CO2 sensor 5 temperature",
+   "state": "24.6",
+   "translation_key": "wall_sensor_5_temperature",
+   "unique_id": "4200000000_wall_sensor_5_temperature",
+   "unit": "\u00b0C"
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_co2_sensor_6_bus_address",
+   "icon": null,
+   "original_name": "CO2 sensor 6 bus address",
+   "state": null,
+   "translation_key": "wall_sensor_6_address",
+   "unique_id": "4200000000_wall_sensor_6_address",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "carbon_dioxide",
+    "friendly_name": "Jablotron Futura CO2 sensor 6 CO2",
+    "state_class": "measurement",
+    "unit_of_measurement": "ppm"
+   },
+   "device_class": "carbon_dioxide",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_co2_sensor_6_co2",
+   "icon": null,
+   "original_name": "CO2 sensor 6 CO2",
+   "state": "612",
+   "translation_key": "wall_sensor_6_co2",
+   "unique_id": "4200000000_wall_sensor_6_co2",
+   "unit": "ppm"
+  },
+  {
+   "attributes": {
+    "device_class": "humidity",
+    "friendly_name": "Jablotron Futura CO2 sensor 6 humidity",
+    "state_class": "measurement",
+    "unit_of_measurement": "%"
+   },
+   "device_class": "humidity",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_co2_sensor_6_humidity",
+   "icon": null,
+   "original_name": "CO2 sensor 6 humidity",
+   "state": "46.4",
+   "translation_key": "wall_sensor_6_humidity",
+   "unique_id": "4200000000_wall_sensor_6_humidity",
+   "unit": "%"
+  },
+  {
+   "attributes": {
+    "device_class": "temperature",
+    "friendly_name": "Jablotron Futura CO2 sensor 6 temperature",
+    "state_class": "measurement",
+    "unit_of_measurement": "\u00b0C"
+   },
+   "device_class": "temperature",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_co2_sensor_6_temperature",
+   "icon": null,
+   "original_name": "CO2 sensor 6 temperature",
+   "state": "27.0",
+   "translation_key": "wall_sensor_6_temperature",
+   "unique_id": "4200000000_wall_sensor_6_temperature",
+   "unit": "\u00b0C"
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura CoolBreeze connected"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_coolbreeze_connected",
+   "icon": null,
+   "original_name": "CoolBreeze connected",
+   "state": "1",
+   "translation_key": "connected_coolbreeze",
+   "unique_id": "4200000000_connected_coolbreeze",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Device ID"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_device_id",
+   "icon": null,
+   "original_name": "Device ID",
+   "state": "39",
+   "translation_key": "device_id",
+   "unique_id": "4200000000_device_id",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "humidity",
+    "friendly_name": "Jablotron Futura Exhaust air humidity",
+    "state_class": "measurement",
+    "unit_of_measurement": "%"
+   },
+   "device_class": "humidity",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_exhaust_air_humidity",
+   "icon": null,
+   "original_name": "Exhaust air humidity",
+   "state": "40.4",
+   "translation_key": "humidity_waste",
+   "unique_id": "4200000000_humidity_waste",
+   "unit": "%"
+  },
+  {
+   "attributes": {
+    "device_class": "temperature",
+    "friendly_name": "Jablotron Futura Exhaust air temperature",
+    "state_class": "measurement",
+    "unit_of_measurement": "\u00b0C"
+   },
+   "device_class": "temperature",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_exhaust_air_temperature",
+   "icon": null,
+   "original_name": "Exhaust air temperature",
+   "state": "24.3",
+   "translation_key": "temp_waste",
+   "unique_id": "4200000000_temp_waste",
+   "unit": "\u00b0C"
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Exhaust fan output",
+    "state_class": "measurement",
+    "unit_of_measurement": "%"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_exhaust_fan_output",
+   "icon": null,
+   "original_name": "Exhaust fan output",
+   "state": "77",
+   "translation_key": "fan_pwm_exhaust",
+   "unique_id": "4200000000_fan_pwm_exhaust",
+   "unit": "%"
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Exhaust fan speed",
+    "state_class": "measurement",
+    "unit_of_measurement": "rpm"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_exhaust_fan_speed",
+   "icon": null,
+   "original_name": "Exhaust fan speed",
+   "state": "2913",
+   "translation_key": "fan_rpm_exhaust",
+   "unique_id": "4200000000_fan_rpm_exhaust",
+   "unit": "rpm"
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Exhaust valves",
+    "icon": "mdi:pipe-valve",
+    "position_available": false,
+    "rs485_unit_ids": [
+     96,
+     97,
+     98,
+     99,
+     104,
+     105,
+     112
+    ],
+    "state_class": "measurement",
+    "zones": {
+     "1": [
+      1,
+      2,
+      3
+     ],
+     "2": [
+      1,
+      2
+     ],
+     "3": [
+      1
+     ],
+     "4": [
+      1
+     ]
+    }
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_exhaust_valves",
+   "icon": "mdi:pipe-valve",
+   "original_name": "Exhaust valves",
+   "state": "7",
+   "translation_key": "valve_count_exhaust",
+   "unique_id": "4200000000_valve_count_exhaust",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura External buttons",
+    "icon": "mdi:gesture-tap-button",
+    "slots": []
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_external_buttons",
+   "icon": "mdi:gesture-tap-button",
+   "original_name": "External buttons",
+   "state": "0",
+   "translation_key": "external_button_count",
+   "unique_id": "4200000000_external_button_count",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura External sensors",
+    "icon": "mdi:thermometer-lines",
+    "slots": []
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_external_sensors",
+   "icon": "mdi:thermometer-lines",
+   "original_name": "External sensors",
+   "state": "0",
+   "translation_key": "external_sensor_count",
+   "unique_id": "4200000000_external_sensor_count",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "humidity",
+    "friendly_name": "Jablotron Futura Extract air humidity",
+    "state_class": "measurement",
+    "unit_of_measurement": "%"
+   },
+   "device_class": "humidity",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_extract_air_humidity",
+   "icon": null,
+   "original_name": "Extract air humidity",
+   "state": "52.5",
+   "translation_key": "humidity_indoor",
+   "unique_id": "4200000000_humidity_indoor",
+   "unit": "%"
+  },
+  {
+   "attributes": {
+    "device_class": "temperature",
+    "friendly_name": "Jablotron Futura Extract air temperature",
+    "state_class": "measurement",
+    "unit_of_measurement": "\u00b0C"
+   },
+   "device_class": "temperature",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_extract_air_temperature",
+   "icon": null,
+   "original_name": "Extract air temperature",
+   "state": "23.7",
+   "translation_key": "temp_indoor",
+   "unique_id": "4200000000_temp_indoor",
+   "unit": "\u00b0C"
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Filter clogging",
+    "state_class": "measurement",
+    "unit_of_measurement": "%"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_filter_clogging",
+   "icon": null,
+   "original_name": "Filter clogging",
+   "state": "27",
+   "translation_key": "filter_wear",
+   "unique_id": "4200000000_filter_wear",
+   "unit": "%"
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Firmware version"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_firmware_version",
+   "icon": null,
+   "original_name": "Firmware version",
+   "state": "FUA.P.07.20",
+   "translation_key": "firmware",
+   "unique_id": "4200000000_firmware",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Hardware revision"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_hardware_revision",
+   "icon": null,
+   "original_name": "Hardware revision",
+   "state": "131238",
+   "translation_key": "hw_revision",
+   "unique_id": "4200000000_hw_revision",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "power",
+    "friendly_name": "Jablotron Futura Heat recovered",
+    "state_class": "measurement",
+    "unit_of_measurement": "W"
+   },
+   "device_class": "power",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_heat_recovered",
+   "icon": null,
+   "original_name": "Heat recovered",
+   "state": "1793",
+   "translation_key": "heat_recovered",
+   "unique_id": "4200000000_heat_recovered",
+   "unit": "W"
+  },
+  {
+   "attributes": {
+    "device_class": "carbon_dioxide",
+    "friendly_name": "Jablotron Futura Highest CO2",
+    "state_class": "measurement",
+    "unit_of_measurement": "ppm"
+   },
+   "device_class": "carbon_dioxide",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_highest_co2",
+   "icon": null,
+   "original_name": "Highest CO2",
+   "state": "857.0",
+   "translation_key": "co2_max",
+   "unique_id": "4200000000_co2_max",
+   "unit": "ppm"
+  },
+  {
+   "attributes": {
+    "device_class": "humidity",
+    "friendly_name": "Jablotron Futura Indoor humidity",
+    "state_class": "measurement",
+    "unit_of_measurement": "%"
+   },
+   "device_class": "humidity",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_indoor_humidity",
+   "icon": null,
+   "original_name": "Indoor humidity",
+   "state": "48.2",
+   "translation_key": "humidity_mean_indoor",
+   "unique_id": "4200000000_humidity_mean_indoor",
+   "unit": "%"
+  },
+  {
+   "attributes": {
+    "device_class": "temperature",
+    "friendly_name": "Jablotron Futura Indoor temperature",
+    "state_class": "measurement",
+    "unit_of_measurement": "\u00b0C"
+   },
+   "device_class": "temperature",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_indoor_temperature",
+   "icon": null,
+   "original_name": "Indoor temperature",
+   "state": "24.9",
+   "translation_key": "temp_mean_indoor",
+   "unique_id": "4200000000_temp_mean_indoor",
+   "unit": "\u00b0C"
+  },
+  {
+   "attributes": {},
+   "device_class": "voltage",
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_input_uin1_voltage",
+   "icon": null,
+   "original_name": "Input UIN1 voltage",
+   "state": null,
+   "translation_key": "uin1_voltage",
+   "unique_id": "4200000000_uin1_voltage",
+   "unit": "V"
+  },
+  {
+   "attributes": {},
+   "device_class": "voltage",
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_input_uin2_voltage",
+   "icon": null,
+   "original_name": "Input UIN2 voltage",
+   "state": null,
+   "translation_key": "uin2_voltage",
+   "unique_id": "4200000000_uin2_voltage",
+   "unit": "V"
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura MAC address"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_mac_address",
+   "icon": null,
+   "original_name": "MAC address",
+   "state": "00:13:b0:00:00:01",
+   "translation_key": "mac_address",
+   "unique_id": "4200000000_mac_address",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_modbus_failures",
+   "icon": null,
+   "original_name": "Modbus failures",
+   "state": null,
+   "translation_key": "stat_fails",
+   "unique_id": "4200000000_stat_fails",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_modbus_reads",
+   "icon": null,
+   "original_name": "Modbus reads",
+   "state": null,
+   "translation_key": "stat_reads",
+   "unique_id": "4200000000_stat_reads",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_modbus_writes",
+   "icon": null,
+   "original_name": "Modbus writes",
+   "state": null,
+   "translation_key": "stat_writes",
+   "unique_id": "4200000000_stat_writes",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Model",
+    "icon": "mdi:information-outline"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_model",
+   "icon": "mdi:information-outline",
+   "original_name": "Model",
+   "state": "Futura L",
+   "translation_key": "model",
+   "unique_id": "4200000000_model",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_model_variant",
+   "icon": null,
+   "original_name": "Model variant",
+   "state": null,
+   "translation_key": "variant",
+   "unique_id": "4200000000_variant",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "duration",
+    "friendly_name": "Jablotron Futura Night mode remaining",
+    "unit_of_measurement": "s"
+   },
+   "device_class": "duration",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_night_mode_remaining",
+   "icon": null,
+   "original_name": "Night mode remaining",
+   "state": "0",
+   "translation_key": "night_timer",
+   "unique_id": "4200000000_night_timer",
+   "unit": "s"
+  },
+  {
+   "attributes": {
+    "device_class": "temperature",
+    "friendly_name": "Jablotron Futura Outdoor temperature",
+    "state_class": "measurement",
+    "unit_of_measurement": "\u00b0C"
+   },
+   "device_class": "temperature",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_outdoor_temperature",
+   "icon": null,
+   "original_name": "Outdoor temperature",
+   "state": "27.3",
+   "translation_key": "temp_outdoor_ntc",
+   "unique_id": "4200000000_temp_outdoor_ntc",
+   "unit": "\u00b0C"
+  },
+  {
+   "attributes": {
+    "device_class": "humidity",
+    "friendly_name": "Jablotron Futura Outside air humidity",
+    "state_class": "measurement",
+    "unit_of_measurement": "%"
+   },
+   "device_class": "humidity",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_outside_air_humidity",
+   "icon": null,
+   "original_name": "Outside air humidity",
+   "state": "43.1",
+   "translation_key": "humidity_ambient",
+   "unique_id": "4200000000_humidity_ambient",
+   "unit": "%"
+  },
+  {
+   "attributes": {
+    "device_class": "temperature",
+    "friendly_name": "Jablotron Futura Outside air temperature",
+    "state_class": "measurement",
+    "unit_of_measurement": "\u00b0C"
+   },
+   "device_class": "temperature",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_outside_air_temperature",
+   "icon": null,
+   "original_name": "Outside air temperature",
+   "state": "27.4",
+   "translation_key": "temp_ambient",
+   "unique_id": "4200000000_temp_ambient",
+   "unit": "\u00b0C"
+  },
+  {
+   "attributes": {
+    "device_class": "duration",
+    "friendly_name": "Jablotron Futura Overpressure remaining",
+    "unit_of_measurement": "s"
+   },
+   "device_class": "duration",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_overpressure_remaining",
+   "icon": null,
+   "original_name": "Overpressure remaining",
+   "state": "0",
+   "translation_key": "overpressure_timer",
+   "unique_id": "4200000000_overpressure_timer",
+   "unit": "s"
+  },
+  {
+   "attributes": {
+    "device_class": "duration",
+    "friendly_name": "Jablotron Futura Party mode remaining",
+    "unit_of_measurement": "s"
+   },
+   "device_class": "duration",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_party_mode_remaining",
+   "icon": null,
+   "original_name": "Party mode remaining",
+   "state": "0",
+   "translation_key": "party_timer",
+   "unique_id": "4200000000_party_timer",
+   "unit": "s"
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Performance factor",
+    "icon": "mdi:chart-line",
+    "state_class": "measurement"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_performance_factor",
+   "icon": "mdi:chart-line",
+   "original_name": "Performance factor",
+   "state": "6.18",
+   "translation_key": "performance_factor",
+   "unique_id": "4200000000_performance_factor",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "power",
+    "friendly_name": "Jablotron Futura Post-heater power",
+    "state_class": "measurement",
+    "unit_of_measurement": "W"
+   },
+   "device_class": "power",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_post_heater_power",
+   "icon": null,
+   "original_name": "Post-heater power",
+   "state": "0",
+   "translation_key": "heating_power",
+   "unique_id": "4200000000_heating_power",
+   "unit": "W"
+  },
+  {
+   "attributes": {
+    "device_class": "power",
+    "friendly_name": "Jablotron Futura Power consumption",
+    "state_class": "measurement",
+    "unit_of_measurement": "W"
+   },
+   "device_class": "power",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_power_consumption",
+   "icon": null,
+   "original_name": "Power consumption",
+   "state": "290",
+   "translation_key": "power_consumption",
+   "unique_id": "4200000000_power_consumption",
+   "unit": "W"
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_register_map_version",
+   "icon": null,
+   "original_name": "Register map version",
+   "state": null,
+   "translation_key": "regmap_version",
+   "unique_id": "4200000000_regmap_version",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "voltage",
+    "friendly_name": "Jablotron Futura RTC battery voltage",
+    "state_class": "measurement",
+    "unit_of_measurement": "V"
+   },
+   "device_class": "voltage",
+   "disabled": false,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_rtc_battery_voltage",
+   "icon": null,
+   "original_name": "RTC battery voltage",
+   "state": "3.067",
+   "translation_key": "rtc_battery_voltage",
+   "unique_id": "4200000000_rtc_battery_voltage",
+   "unit": "V"
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Serial number"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_serial_number",
+   "icon": null,
+   "original_name": "Serial number",
+   "state": "4200000000",
+   "translation_key": "serial_number",
+   "unique_id": "4200000000_serial_number",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "humidity",
+    "friendly_name": "Jablotron Futura Supply air humidity",
+    "state_class": "measurement",
+    "unit_of_measurement": "%"
+   },
+   "device_class": "humidity",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_supply_air_humidity",
+   "icon": null,
+   "original_name": "Supply air humidity",
+   "state": "81.2",
+   "translation_key": "humidity_fresh",
+   "unique_id": "4200000000_humidity_fresh",
+   "unit": "%"
+  },
+  {
+   "attributes": {
+    "device_class": "temperature",
+    "friendly_name": "Jablotron Futura Supply air temperature",
+    "state_class": "measurement",
+    "unit_of_measurement": "\u00b0C"
+   },
+   "device_class": "temperature",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_supply_air_temperature",
+   "icon": null,
+   "original_name": "Supply air temperature",
+   "state": "15.7",
+   "translation_key": "temp_fresh",
+   "unique_id": "4200000000_temp_fresh",
+   "unit": "\u00b0C"
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Supply fan output",
+    "state_class": "measurement",
+    "unit_of_measurement": "%"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_supply_fan_output",
+   "icon": null,
+   "original_name": "Supply fan output",
+   "state": "82",
+   "translation_key": "fan_pwm_supply",
+   "unique_id": "4200000000_fan_pwm_supply",
+   "unit": "%"
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Supply fan speed",
+    "state_class": "measurement",
+    "unit_of_measurement": "rpm"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_supply_fan_speed",
+   "icon": null,
+   "original_name": "Supply fan speed",
+   "state": "2649",
+   "translation_key": "fan_rpm_supply",
+   "unique_id": "4200000000_fan_rpm_supply",
+   "unit": "rpm"
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Supply valves",
+    "icon": "mdi:pipe-valve",
+    "position_available": false,
+    "rs485_unit_ids": [
+     64,
+     65,
+     66,
+     67,
+     68,
+     69,
+     72,
+     73,
+     74,
+     75,
+     80,
+     88
+    ],
+    "state_class": "measurement",
+    "zones": {
+     "1": [
+      1,
+      2,
+      3,
+      4
+     ],
+     "2": [
+      1,
+      2
+     ],
+     "3": [
+      1,
+      2
+     ],
+     "4": [
+      1,
+      2
+     ],
+     "5": [
+      1
+     ],
+     "6": [
+      1
+     ]
+    }
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": "diagnostic",
+   "entity_id": "sensor.jablotron_futura_supply_valves",
+   "icon": "mdi:pipe-valve",
+   "original_name": "Supply valves",
+   "state": "12",
+   "translation_key": "valve_count_supply",
+   "unique_id": "4200000000_valve_count_supply",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "device_class": "enum",
+    "friendly_name": "Jablotron Futura Ventilation mode",
+    "icon": "mdi:fan",
+    "options": [
+     "off",
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "auto"
+    ]
+   },
+   "device_class": "enum",
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "sensor.jablotron_futura_ventilation_mode",
+   "icon": "mdi:fan",
+   "original_name": "Ventilation mode",
+   "state": "auto",
+   "translation_key": "ventilation_text",
+   "unique_id": "4200000000_ventilation_text",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Additional cooling",
+    "icon": "mdi:snowflake"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "switch.jablotron_futura_additional_cooling",
+   "icon": "mdi:snowflake",
+   "original_name": "Additional cooling",
+   "state": "on",
+   "translation_key": "cooling_enable",
+   "unique_id": "4200000000_cooling_enable",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Additional heating",
+    "icon": "mdi:fire"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "switch.jablotron_futura_additional_heating",
+   "icon": "mdi:fire",
+   "original_name": "Additional heating",
+   "state": "off",
+   "translation_key": "heating_enable",
+   "unique_id": "4200000000_heating_enable",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Automatic bypass",
+    "icon": "mdi:air-filter"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "switch.jablotron_futura_automatic_bypass",
+   "icon": "mdi:air-filter",
+   "original_name": "Automatic bypass",
+   "state": "on",
+   "translation_key": "bypass_enable",
+   "unique_id": "4200000000_bypass_enable",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Comfort temperature control",
+    "icon": "mdi:sofa"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "switch.jablotron_futura_comfort_temperature_control",
+   "icon": "mdi:sofa",
+   "original_name": "Comfort temperature control",
+   "state": "off",
+   "translation_key": "comfort_enable",
+   "unique_id": "4200000000_comfort_enable",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "config",
+   "entity_id": "switch.jablotron_futura_external_button_1_present",
+   "icon": null,
+   "original_name": "External button 1 present",
+   "state": null,
+   "translation_key": "ext_button_1_present",
+   "unique_id": "4200000000_ext_button_1_present",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "config",
+   "entity_id": "switch.jablotron_futura_external_button_2_present",
+   "icon": null,
+   "original_name": "External button 2 present",
+   "state": null,
+   "translation_key": "ext_button_2_present",
+   "unique_id": "4200000000_ext_button_2_present",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "config",
+   "entity_id": "switch.jablotron_futura_external_button_3_present",
+   "icon": null,
+   "original_name": "External button 3 present",
+   "state": null,
+   "translation_key": "ext_button_3_present",
+   "unique_id": "4200000000_ext_button_3_present",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "config",
+   "entity_id": "switch.jablotron_futura_external_button_4_present",
+   "icon": null,
+   "original_name": "External button 4 present",
+   "state": null,
+   "translation_key": "ext_button_4_present",
+   "unique_id": "4200000000_ext_button_4_present",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "config",
+   "entity_id": "switch.jablotron_futura_external_button_5_present",
+   "icon": null,
+   "original_name": "External button 5 present",
+   "state": null,
+   "translation_key": "ext_button_5_present",
+   "unique_id": "4200000000_ext_button_5_present",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "config",
+   "entity_id": "switch.jablotron_futura_external_button_6_present",
+   "icon": null,
+   "original_name": "External button 6 present",
+   "state": null,
+   "translation_key": "ext_button_6_present",
+   "unique_id": "4200000000_ext_button_6_present",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "config",
+   "entity_id": "switch.jablotron_futura_external_button_7_present",
+   "icon": null,
+   "original_name": "External button 7 present",
+   "state": null,
+   "translation_key": "ext_button_7_present",
+   "unique_id": "4200000000_ext_button_7_present",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "config",
+   "entity_id": "switch.jablotron_futura_external_button_8_present",
+   "icon": null,
+   "original_name": "External button 8 present",
+   "state": null,
+   "translation_key": "ext_button_8_present",
+   "unique_id": "4200000000_ext_button_8_present",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "config",
+   "entity_id": "switch.jablotron_futura_external_sensor_1_present",
+   "icon": null,
+   "original_name": "External sensor 1 present",
+   "state": null,
+   "translation_key": "ext_sensor_1_present",
+   "unique_id": "4200000000_ext_sensor_1_present",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "config",
+   "entity_id": "switch.jablotron_futura_external_sensor_2_present",
+   "icon": null,
+   "original_name": "External sensor 2 present",
+   "state": null,
+   "translation_key": "ext_sensor_2_present",
+   "unique_id": "4200000000_ext_sensor_2_present",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "config",
+   "entity_id": "switch.jablotron_futura_external_sensor_3_present",
+   "icon": null,
+   "original_name": "External sensor 3 present",
+   "state": null,
+   "translation_key": "ext_sensor_3_present",
+   "unique_id": "4200000000_ext_sensor_3_present",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "config",
+   "entity_id": "switch.jablotron_futura_external_sensor_4_present",
+   "icon": null,
+   "original_name": "External sensor 4 present",
+   "state": null,
+   "translation_key": "ext_sensor_4_present",
+   "unique_id": "4200000000_ext_sensor_4_present",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "config",
+   "entity_id": "switch.jablotron_futura_external_sensor_5_present",
+   "icon": null,
+   "original_name": "External sensor 5 present",
+   "state": null,
+   "translation_key": "ext_sensor_5_present",
+   "unique_id": "4200000000_ext_sensor_5_present",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "config",
+   "entity_id": "switch.jablotron_futura_external_sensor_6_present",
+   "icon": null,
+   "original_name": "External sensor 6 present",
+   "state": null,
+   "translation_key": "ext_sensor_6_present",
+   "unique_id": "4200000000_ext_sensor_6_present",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "config",
+   "entity_id": "switch.jablotron_futura_external_sensor_7_present",
+   "icon": null,
+   "original_name": "External sensor 7 present",
+   "state": null,
+   "translation_key": "ext_sensor_7_present",
+   "unique_id": "4200000000_ext_sensor_7_present",
+   "unit": null
+  },
+  {
+   "attributes": {},
+   "device_class": null,
+   "disabled": true,
+   "entity_category": "config",
+   "entity_id": "switch.jablotron_futura_external_sensor_8_present",
+   "icon": null,
+   "original_name": "External sensor 8 present",
+   "state": null,
+   "translation_key": "ext_sensor_8_present",
+   "unique_id": "4200000000_ext_sensor_8_present",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Kitchen hood normally open",
+    "icon": "mdi:stove"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": "config",
+   "entity_id": "switch.jablotron_futura_kitchen_hood_normally_open",
+   "icon": "mdi:stove",
+   "original_name": "Kitchen hood normally open",
+   "state": "on",
+   "translation_key": "kitchenhood_normally_open",
+   "unique_id": "4200000000_kitchenhood_normally_open",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Radon protection",
+    "icon": "mdi:radioactive"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "switch.jablotron_futura_radon_protection",
+   "icon": "mdi:radioactive",
+   "original_name": "Radon protection",
+   "state": "on",
+   "translation_key": "antiradon",
+   "unique_id": "4200000000_antiradon",
+   "unit": null
+  },
+  {
+   "attributes": {
+    "friendly_name": "Jablotron Futura Schedule",
+    "icon": "mdi:calendar-clock"
+   },
+   "device_class": null,
+   "disabled": false,
+   "entity_category": null,
+   "entity_id": "switch.jablotron_futura_schedule",
+   "icon": "mdi:calendar-clock",
+   "original_name": "Schedule",
+   "state": "on",
+   "translation_key": "time_program",
+   "unique_id": "4200000000_time_program",
+   "unit": null
+  }
+ ],
+ "store": {
+  "holding:0": 6,
+  "holding:1": 0,
+  "holding:10": 240,
+  "holding:100": 0,
+  "holding:105": 0,
+  "holding:11": 500,
+  "holding:110": 0,
+  "holding:115": 0,
+  "holding:12": 1,
+  "holding:120": 65524,
+  "holding:125": 65524,
+  "holding:13": 1,
+  "holding:130": 65524,
+  "holding:135": 65524,
+  "holding:14": 1,
+  "holding:140": 65524,
+  "holding:145": 0,
+  "holding:15": 0,
+  "holding:150": 0,
+  "holding:16": 1,
+  "holding:160": 0,
+  "holding:162": 0,
+  "holding:165": 0,
+  "holding:167": 0,
+  "holding:17": 0,
+  "holding:170": 0,
+  "holding:172": 0,
+  "holding:175": 0,
+  "holding:177": 0,
+  "holding:180": 0,
+  "holding:182": 0,
+  "holding:185": 0,
+  "holding:187": 0,
+  "holding:190": 0,
+  "holding:192": 0,
+  "holding:195": 0,
+  "holding:197": 0,
+  "holding:2": 0,
+  "holding:20": 1,
+  "holding:21": 1,
+  "holding:22": 50,
+  "holding:23": 120,
+  "holding:3": 0,
+  "holding:300": 0,
+  "holding:301": 0,
+  "holding:302": 0,
+  "holding:303": 0,
+  "holding:304": 0,
+  "holding:305": 0,
+  "holding:310": 0,
+  "holding:311": 0,
+  "holding:312": 0,
+  "holding:313": 0,
+  "holding:314": 0,
+  "holding:315": 0,
+  "holding:320": 0,
+  "holding:321": 0,
+  "holding:322": 0,
+  "holding:323": 0,
+  "holding:324": 0,
+  "holding:325": 0,
+  "holding:330": 0,
+  "holding:331": 0,
+  "holding:332": 0,
+  "holding:333": 0,
+  "holding:334": 0,
+  "holding:335": 0,
+  "holding:340": 0,
+  "holding:341": 0,
+  "holding:342": 0,
+  "holding:343": 0,
+  "holding:344": 0,
+  "holding:345": 0,
+  "holding:350": 0,
+  "holding:351": 0,
+  "holding:352": 0,
+  "holding:353": 0,
+  "holding:354": 0,
+  "holding:355": 0,
+  "holding:360": 0,
+  "holding:361": 0,
+  "holding:362": 0,
+  "holding:363": 0,
+  "holding:364": 0,
+  "holding:365": 0,
+  "holding:370": 0,
+  "holding:371": 0,
+  "holding:372": 0,
+  "holding:373": 0,
+  "holding:374": 0,
+  "holding:375": 0,
+  "holding:4": 0,
+  "holding:400": 0,
+  "holding:401": 0,
+  "holding:402": 0,
+  "holding:403": 0,
+  "holding:410": 0,
+  "holding:411": 0,
+  "holding:412": 0,
+  "holding:413": 0,
+  "holding:420": 0,
+  "holding:421": 0,
+  "holding:422": 0,
+  "holding:423": 0,
+  "holding:430": 0,
+  "holding:431": 0,
+  "holding:432": 0,
+  "holding:433": 0,
+  "holding:440": 0,
+  "holding:441": 0,
+  "holding:442": 0,
+  "holding:443": 0,
+  "holding:450": 0,
+  "holding:451": 0,
+  "holding:452": 0,
+  "holding:453": 0,
+  "holding:460": 0,
+  "holding:461": 0,
+  "holding:462": 0,
+  "holding:463": 0,
+  "holding:470": 0,
+  "holding:471": 0,
+  "holding:472": 0,
+  "holding:473": 0,
+  "holding:5": 0,
+  "holding:6": 37105,
+  "holding:7": 26872,
+  "holding:8": 37105,
+  "holding:9": 26872,
+  "holding:900": 0,
+  "holding:920": 65535,
+  "holding:922": 300,
+  "input:0": 39,
+  "input:1": 59904,
+  "input:10": 0,
+  "input:100": 0,
+  "input:101": 0,
+  "input:102": 0,
+  "input:103": 0,
+  "input:104": 0,
+  "input:105": 0,
+  "input:106": 0,
+  "input:107": 0,
+  "input:108": 0,
+  "input:109": 0,
+  "input:11": 0,
+  "input:110": 0,
+  "input:111": 0,
+  "input:112": 0,
+  "input:113": 0,
+  "input:114": 0,
+  "input:115": 0,
+  "input:116": 0,
+  "input:117": 0,
+  "input:118": 0,
+  "input:119": 0,
+  "input:12": 172,
+  "input:120": 9,
+  "input:121": 32,
+  "input:122": 573,
+  "input:123": 245,
+  "input:124": 483,
+  "input:125": 10,
+  "input:126": 32,
+  "input:127": 662,
+  "input:128": 232,
+  "input:129": 509,
+  "input:13": 17,
+  "input:130": 11,
+  "input:131": 32,
+  "input:132": 857,
+  "input:133": 239,
+  "input:134": 512,
+  "input:135": 12,
+  "input:136": 32,
+  "input:137": 607,
+  "input:138": 246,
+  "input:139": 472,
+  "input:14": 1,
+  "input:140": 13,
+  "input:141": 32,
+  "input:142": 612,
+  "input:143": 270,
+  "input:144": 464,
+  "input:145": 0,
+  "input:146": 0,
+  "input:147": 0,
+  "input:148": 0,
+  "input:149": 0,
+  "input:15": 767,
+  "input:150": 0,
+  "input:151": 0,
+  "input:152": 0,
+  "input:153": 0,
+  "input:154": 0,
+  "input:16": 388,
+  "input:160": 16,
+  "input:161": 0,
+  "input:162": 474,
+  "input:163": 263,
+  "input:164": 450,
+  "input:165": 0,
+  "input:17": 0,
+  "input:170": 0,
+  "input:171": 0,
+  "input:172": 0,
+  "input:173": 0,
+  "input:174": 0,
+  "input:175": 0,
+  "input:18": 0,
+  "input:180": 0,
+  "input:181": 0,
+  "input:182": 0,
+  "input:183": 0,
+  "input:184": 0,
+  "input:185": 0,
+  "input:19": 0,
+  "input:190": 0,
+  "input:191": 0,
+  "input:192": 0,
+  "input:193": 0,
+  "input:194": 0,
+  "input:195": 0,
+  "input:2": 64086,
+  "input:20": 0,
+  "input:200": 0,
+  "input:201": 0,
+  "input:202": 0,
+  "input:203": 0,
+  "input:204": 0,
+  "input:205": 0,
+  "input:21": 0,
+  "input:210": 0,
+  "input:211": 0,
+  "input:212": 0,
+  "input:213": 0,
+  "input:214": 0,
+  "input:215": 0,
+  "input:220": 0,
+  "input:221": 0,
+  "input:222": 0,
+  "input:223": 0,
+  "input:224": 0,
+  "input:225": 0,
+  "input:230": 0,
+  "input:231": 0,
+  "input:232": 0,
+  "input:233": 0,
+  "input:234": 0,
+  "input:235": 0,
+  "input:3": 4864,
+  "input:30": 274,
+  "input:31": 157,
+  "input:32": 237,
+  "input:33": 243,
+  "input:34": 431,
+  "input:35": 812,
+  "input:36": 525,
+  "input:37": 404,
+  "input:38": 273,
+  "input:4": 176,
+  "input:40": 27,
+  "input:41": 290,
+  "input:42": 1793,
+  "input:43": 0,
+  "input:44": 366,
+  "input:45": 82,
+  "input:46": 77,
+  "input:47": 2649,
+  "input:48": 2913,
+  "input:49": 10583,
+  "input:5": 256,
+  "input:50": 10591,
+  "input:51": 0,
+  "input:52": 3067,
+  "input:6": 166,
+  "input:60": 0,
+  "input:61": 0,
+  "input:62": 0,
+  "input:63": 0,
+  "input:64": 0,
+  "input:65": 0,
+  "input:66": 0,
+  "input:67": 62,
+  "input:68": 0,
+  "input:69": 1,
+  "input:7": 2,
+  "input:70": 3903,
+  "input:71": 257,
+  "input:72": 783,
+  "input:73": 1,
+  "input:74": 7,
+  "input:75": 1,
+  "input:8": 1812,
+  "input:80": 0,
+  "input:9": 9999
+ }
+}

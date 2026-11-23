@@ -1,0 +1,23 @@
+{
+  "domain": "jablotron_futura_i3",
+  "name": "Jablotron Futura (via i3)",
+  "after_dependencies": [
+    "frontend",
+    "lovelace"
+  ],
+  "codeowners": [
+    "@oleks-p"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "file_upload",
+    "http",
+    "mqtt"
+  ],
+  "documentation": "https://github.com/oleks-p/ha-jablotron-futura-i3",
+  "integration_type": "device",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/oleks-p/ha-jablotron-futura-i3/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}
