@@ -66,9 +66,16 @@ Futura  ──Modbus──  i3 controller  ──MQTT──  Home Assistant
 ### 1. Give the controller the channels
 
 [`tools/i3_channels.py`](tools/i3_channels.py) edits a backup exported from the
-i3 app. It reuses any channel that already bridges a needed register, turns a
-write-only one into read/write, adds the rest, and with `--prune` removes the
-unit's channels nothing needs — never one an automation refers to.
+i3 app. It reuses any channel that already reads a needed register, adds the
+rest, and with `--prune` removes the unit's channels nothing needs — never one
+an automation refers to.
+
+A write-only channel is left as it is, with a read channel added beside it.
+The i3 rewrites a write-only channel every period, but a read/write one only
+when its value changes. That matters for the external sensor slots: the Futura
+drops a sensor that has not been written for about two minutes, and a supply
+zone without its sensor raises warning bit 9, "incorrect configuration of a
+supply ventilation zone".
 
 ```bash
 python3 tools/i3_channels.py backup.json --controller A1B2 --slave 1 \
@@ -163,6 +170,18 @@ repository's README for the card reference and the design tokens.
   measurements move constantly and recover within a period; a setting changed
   from the i3 app during a restart shows its old value until the next change or
   controller restart.
+- **After a controller restart, a value that went to 0 while it was down
+  shows its old value for up to one channel period.** A booting controller
+  publishes 0 for every channel before it has read anything, so a 0 then only
+  counts once the controller reports a good read of that channel, or once the
+  channel's period has passed with nothing else published. Until then the last
+  known value stays, so fitted sensors do not read as absent and the
+  ventilation does not read as off for the first minutes after every restart.
+- **External sensor slots must be rewritten at least every minute.** The Futura
+  drops a slot that has not been written for about two minutes and raises
+  warning bit 9 if a supply zone is left without a sensor. A controller rule
+  that writes only on change stops refreshing a steady value, so run the rules
+  that feed the slots on a one-minute schedule.
 - **The away period does not arm from a write** — a limitation of the unit, the
   same as over Modbus TCP.
 - Everything in the Modbus integration's list of unit limitations applies.

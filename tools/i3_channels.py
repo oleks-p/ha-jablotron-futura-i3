@@ -12,10 +12,15 @@ slave change; every other unit, channel and automation is copied through as is.
 For each register it needs, in order of preference:
 
 * a channel that already bridges it is KEPT, its polling period adjusted;
-* a write-only channel on a holding register is turned into a read/write one,
-  so the value the integration shows is read back from the unit rather than
-  being the value the controller meant to write;
 * otherwise a channel is ADDED, numbered after the highest one in use.
+
+A write-only channel is never turned into a read/write one, and never counts as
+the register's reader: it gets a read channel of its own beside it. A
+write-only channel is how a controller feeds the unit, and the i3 rewrites it
+every period whether or not the value changed. A read/write channel writes only
+on a change, and the Futura drops an external sensor that has not been written
+for about two minutes -- with a supply zone left without its sensor, it raises
+warning bit 9 ("incorrect configuration of a supply ventilation zone").
 
 `--prune` removes the slave's channels that bridge nothing the integration
 needs. Without it they are left alone and listed. A channel any automation
@@ -48,7 +53,6 @@ from custom_components.jablotron_futura_i3.i3_layout import (  # noqa: E402
     CHANNEL_WORDS,
     DATA_TYPE_U32,
     EXACT_ORDER_FOR_WORD,
-    RTYPE_HOLDING,
     Fitted,
     byte_swap_code,
     channel_type_for,
@@ -175,19 +179,16 @@ def plan(backup: dict, controller: str, slave: int, fitted: Fitted, prune: bool)
             wanted_shape = order_of_word[half][1] if half >= 0 else (-1, False)
             candidates = [
                 ch for ch in by_register.get((reg.table, reg.address), [])
-                if ch.point not in used and ch.type != "mb_u32"
+                if ch.point not in used and ch.type != "mb_u32" and ch.readable
                 and (ch.half, ch.swapped) == wanted_shape
                 and (half >= 0 or ch.words == reg.words)
             ]
-            candidates.sort(key=lambda ch: (not ch.readable, ch.type != want_type))
+            candidates.sort(key=lambda ch: ch.type != want_type)
             if candidates:
                 ch = candidates[0]
                 used.add(ch.point)
                 cfg = _cfg(raw_by_point[ch.point])
                 changes = []
-                if not ch.readable:
-                    cfg["register_type"] = RTYPE_HOLDING
-                    changes.append("write-only -> read/write")
                 if int(cfg.get("period", 0)) != period_ms:
                     changes.append(
                         f"period {int(cfg.get('period', 0)) // 1000}s -> {period_ms // 1000}s"

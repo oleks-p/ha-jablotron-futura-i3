@@ -30,6 +30,13 @@ Three properties of the controller shape everything here:
   says per channel whether its last read succeeded on ``.../available``. A
   controller that has gone quiet, or a link on which every read fails, takes
   the entities unavailable -- what the Modbus client did when the socket died.
+* **When it boots it publishes 0 for every channel**, and may report channels
+  unavailable, before it has read anything. Those are placeholders, not
+  readings: taken at face value, a fitted sensor would read as absent and the
+  ventilation as off until each channel's first read, up to ten minutes for a
+  slow one. So after a restart the last known words stay, and a channel's 0 or
+  failure only counts once it is confirmed -- by an ``available`` of 1, or by
+  the channel's period passing with no other value.
 """
 
 from __future__ import annotations
@@ -42,6 +49,7 @@ from typing import Any
 
 from homeassistant.components import mqtt
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.event import async_call_later
 
 from .i3_layout import Channel
 from .registers import Table
@@ -68,6 +76,35 @@ STATIC_SLOTS: frozenset[tuple[Table, int]] = frozenset(
 #: Heartbeats arrive about every 60 s, round-robin with a per-controller phase,
 #: so anything below 180 s flaps.
 DEFAULT_HEARTBEAT_TIMEOUT = 240
+
+#: After a controller boots, how long a channel's placeholder 0 or failure is
+#: held back: its period plus this margin, or BOOT_GRACE_DEFAULT when the
+#: period is not known (the slowest channels read every 600 s).
+BOOT_MARGIN = 30
+BOOT_GRACE_DEFAULT = 660
+#: A first heartbeat this young means Home Assistant came up while the
+#: controller was still booting.
+BOOT_FIRST_BEAT = 120
+#: An ``available`` of 1 can arrive just before the value it vouches for; a 0
+#: placeholder is only taken as the reading if no other value follows this soon.
+BOOT_ZERO_CONFIRM = 5.0
+
+
+def _monotonic() -> float:
+    return time.monotonic()
+
+
+class _Boot:
+    """A channel whose first read since the controller booted is still due."""
+
+    __slots__ = ("deadline", "failed", "zero")
+
+    def __init__(self, deadline: float) -> None:
+        self.deadline = deadline
+        #: It has published its placeholder 0 since the boot.
+        self.zero = False
+        #: It has reported a failed read since the boot.
+        self.failed = False
 
 #: How the controller builds a 32-bit channel value from the unit's two registers.
 #: ``lo_hi``: value = (r[1] << 16) | r[0], the Futura's own convention.
@@ -234,6 +271,16 @@ class FuturaI3Client:
         self._started_at = time.monotonic()
         self._uptime: float | None = None
         self.restarts = 0
+        #: Channels still within their boot grace, by point.
+        self._booting: dict[str, _Boot] = {}
+        self._boot_timer: Callable[[], None] | None = None
+        #: Channels whose 0 waits out BOOT_ZERO_CONFIRM, with its timer.
+        self._zero_confirm: dict[str, Callable[[], None]] = {}
+        #: The last 0 each channel published, with what it replaced, so a
+        #: boot noticed late can put the words back: point -> (when, words, u32).
+        self._last_zero: dict[str, tuple[float, dict[tuple[Table, int], int | None], int | None]] = {}
+        #: When each channel last reported a failed read.
+        self._failed_at: dict[str, float] = {}
         self._unsubs: list[Callable[[], None]] = []
         self._listeners: list[Callable[[], None]] = []
         self._seed_static()
@@ -400,6 +447,12 @@ class FuturaI3Client:
     async def async_close(self) -> None:
         while self._unsubs:
             self._unsubs.pop()()
+        if self._boot_timer is not None:
+            self._boot_timer()
+            self._boot_timer = None
+        for cancel in self._zero_confirm.values():
+            cancel()
+        self._zero_confirm.clear()
 
     def _make_value_handler(self, ch: Channel) -> Callable[[Any], None]:
         @callback
@@ -418,11 +471,22 @@ class FuturaI3Client:
             number = parse_number(msg.payload)
             if number is None:
                 return
+            boot = self._booting.get(ch.point)
+            if boot is not None:
+                if not number:
+                    boot.failed = True
+                    return
+                # A read since the boot succeeded: if all the channel said was
+                # its placeholder 0, then 0 is the reading.
+                del self._booting[ch.point]
+                if boot.zero:
+                    self._confirm_zero_later(ch)
             before = ch.point in self._failed
             if number:
                 self._failed.discard(ch.point)
             else:
                 self._failed.add(ch.point)
+                self._failed_at[ch.point] = _monotonic()
             if before != (ch.point in self._failed):
                 self._notify()
 
@@ -434,23 +498,129 @@ class FuturaI3Client:
         if uptime is None:
             return
         first = self._last_beat is None
-        if self._uptime is not None and uptime < self._uptime:
+        restarted = self._uptime is not None and uptime < self._uptime
+        if restarted:
             self.restarts += 1
             _LOGGER.info(
-                "Controller %s restarted; it re-publishes every channel as it "
-                "reads them again",
+                "Controller %s restarted; keeping the last known values until "
+                "it has read each channel again",
                 self.controller,
             )
+        if restarted or (self._uptime is None and uptime < BOOT_FIRST_BEAT):
+            self._begin_boot(_monotonic() - uptime)
         self._uptime = uptime
         self._last_beat = time.monotonic()
         if first:
             self._notify()
+
+    # -- controller boot -------------------------------------------------------
+
+    def _slots_of(self, ch: Channel) -> list[tuple[Table, int]]:
+        return [(ch.table, ch.address + offset) for offset in ch.delivers]
+
+    def _begin_boot(self, boot_at: float) -> None:
+        """Hold back placeholders from a boot at `boot_at` (monotonic).
+
+        The heartbeat that reveals a boot can come after the placeholders it
+        explains, so what arrived since `boot_at` is undone first.
+        """
+        now = _monotonic()
+        moved = False
+        for ch in self.channels:
+            deadline = boot_at + (ch.period or BOOT_GRACE_DEFAULT - BOOT_MARGIN) + BOOT_MARGIN
+            if deadline <= now:
+                continue
+            boot = _Boot(deadline)
+            zero = self._last_zero.get(ch.point)
+            if zero is not None and zero[0] >= boot_at:
+                del self._last_zero[ch.point]
+                for slot, word in zero[1].items():
+                    if word is not None and self._words.get(slot) != word:
+                        self._words[slot] = word
+                        moved = True
+                if zero[2] is not None:
+                    self._u32_values[ch.point] = zero[2]
+                boot.zero = True
+            failed_at = self._failed_at.get(ch.point)
+            if ch.point in self._failed and failed_at is not None and failed_at >= boot_at:
+                self._failed.discard(ch.point)
+                boot.failed = True
+                moved = True
+            pending = self._zero_confirm.pop(ch.point, None)
+            if pending is not None:
+                pending()
+            self._booting[ch.point] = boot
+        self._schedule_boot_check()
+        if moved:
+            self._notify()
+
+    def _schedule_boot_check(self) -> None:
+        if self._boot_timer is not None:
+            self._boot_timer()
+            self._boot_timer = None
+        if not self._booting:
+            return
+        delay = max(0.0, min(b.deadline for b in self._booting.values()) - _monotonic())
+        self._boot_timer = async_call_later(self.hass, delay, self._check_boot)
+
+    @callback
+    def _check_boot(self, _now: Any = None) -> None:
+        """A channel's period has passed since the boot: what it said stands."""
+        self._boot_timer = None
+        now = _monotonic()
+        moved = False
+        for point, boot in list(self._booting.items()):
+            if boot.deadline > now:
+                continue
+            del self._booting[point]
+            ch = self._by_point[point]
+            if boot.failed:
+                self._failed.add(point)
+                self._failed_at[point] = now
+                moved = True
+            if boot.zero:
+                moved = self._fold(ch, 0) or moved
+        self._schedule_boot_check()
+        if moved:
+            self._notify()
+
+    def _confirm_zero_later(self, ch: Channel) -> None:
+        @callback
+        def confirm(_now: Any = None) -> None:
+            if self._zero_confirm.pop(ch.point, None) is not None and self._fold(ch, 0):
+                self._notify()
+
+        self._zero_confirm[ch.point] = async_call_later(self.hass, BOOT_ZERO_CONFIRM, confirm)
+
+    def booting_channels(self) -> list[str]:
+        """Channels whose first read since the controller booted is still due."""
+        return sorted(self._booting)
 
     # -- decoding a publish ----------------------------------------------------
 
     def apply(self, ch: Channel, number: float) -> bool:
         """Fold one published value into the word cache. True if anything moved."""
         raw = round(number / ch.multiplier) if ch.multiplier not in (0, 1) else round(number)
+        boot = self._booting.get(ch.point)
+        if raw == 0:
+            if boot is not None:
+                boot.zero = True
+                return False
+            if ch.point not in self._zero_confirm:
+                self._last_zero[ch.point] = (
+                    _monotonic(),
+                    {slot: self._words.get(slot) for slot in self._slots_of(ch)},
+                    self._u32_values.get(ch.point),
+                )
+        else:
+            if boot is not None:
+                del self._booting[ch.point]
+            pending = self._zero_confirm.pop(ch.point, None)
+            if pending is not None:
+                pending()
+        return self._fold(ch, raw)
+
+    def _fold(self, ch: Channel, raw: int) -> bool:
         if ch.words == 1:
             return self._store(ch.table, ch.address, int(raw) & 0xFFFF)
         if ch.half >= 0:

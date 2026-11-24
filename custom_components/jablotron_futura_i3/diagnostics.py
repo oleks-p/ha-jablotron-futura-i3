@@ -49,6 +49,7 @@ async def async_get_config_entry_diagnostics(
             "controller_restarts": client.restarts,
             "problem": client.problem(),
             "failed_channels": client.failed_channels(),
+            "booting_channels": client.booting_channels(),
             "kept_static": client.kept_static(),
             # Raw, before any word order: what to look at when it is not learned.
             # The serial number's channel is left out, like the serial itself.

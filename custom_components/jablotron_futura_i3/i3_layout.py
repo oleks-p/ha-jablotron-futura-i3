@@ -119,6 +119,8 @@ class Channel:
     half: int = -1
     #: Whether that word arrives with its two bytes swapped.
     swapped: bool = False
+    #: How often the controller reads the channel, in seconds; 0 if not known.
+    period: int = 0
 
     @property
     def words(self) -> int:
@@ -148,6 +150,7 @@ class Channel:
             span=int(data.get("span", 0)),
             half=int(data.get("half", -1)),
             swapped=bool(data.get("swapped", False)),
+            period=int(data.get("period", 0)),
         )
 
     @property
@@ -247,6 +250,7 @@ def channels_from_backup(
                     span=span,
                     half=half,
                     swapped=swapped,
+                    period=int(cfg.get("period") or 0) // 1000,
                 )
             )
     return found, skipped
@@ -361,7 +365,9 @@ def period_for(reg: Reg) -> int:
         if reg.key.startswith(("ext_sensor_", "ext_button_")):
             if reg.key.endswith("_present"):
                 return PERIOD_STATIC
-            return PERIOD_LIVE
+            # Room readings a controller feeds in: they change slowly, and
+            # reading them back is only for display.
+            return PERIOD_SETTING
         return PERIOD_STATIC if reg.config else PERIOD_SETTING
     if reg.tier.value in ("once", "slow"):
         return PERIOD_STATIC
