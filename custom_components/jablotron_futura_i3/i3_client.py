@@ -36,7 +36,8 @@ Three properties of the controller shape everything here:
   ventilation as off until each channel's first read, up to ten minutes for a
   slow one. So after a restart the last known words stay, and a channel's 0 or
   failure only counts once it is confirmed -- by an ``available`` of 1, or by
-  the channel's period passing with no other value.
+  twice the channel's period passing with no other value: a booting controller
+  takes about one period and up to another 90 s to publish its first read.
 """
 
 from __future__ import annotations
@@ -78,10 +79,19 @@ STATIC_SLOTS: frozenset[tuple[Table, int]] = frozenset(
 DEFAULT_HEARTBEAT_TIMEOUT = 240
 
 #: After a controller boots, how long a channel's placeholder 0 or failure is
-#: held back: its period plus this margin, or BOOT_GRACE_DEFAULT when the
-#: period is not known (the slowest channels read every 600 s).
-BOOT_MARGIN = 30
-BOOT_GRACE_DEFAULT = 660
+#: held back: twice its period plus this margin. The first real read comes
+#: about one period after the boot plus 40-90 s (measured: 48 s for a 10 s
+#: channel, 690 s for a 600 s one), so one period plus a short margin is not
+#: enough. A channel whose period is not known is taken as the slowest, 600 s.
+BOOT_MARGIN = 120
+BOOT_PERIOD_DEFAULT = 600
+BOOT_GRACE_DEFAULT = 2 * BOOT_PERIOD_DEFAULT + BOOT_MARGIN
+
+
+def boot_grace(period: int) -> int:
+    """Seconds a channel's boot placeholders are held back."""
+    return 2 * (period or BOOT_PERIOD_DEFAULT) + BOOT_MARGIN
+
 #: A first heartbeat this young means Home Assistant came up while the
 #: controller was still booting.
 BOOT_FIRST_BEAT = 120
@@ -527,7 +537,7 @@ class FuturaI3Client:
         now = _monotonic()
         moved = False
         for ch in self.channels:
-            deadline = boot_at + (ch.period or BOOT_GRACE_DEFAULT - BOOT_MARGIN) + BOOT_MARGIN
+            deadline = boot_at + boot_grace(ch.period)
             if deadline <= now:
                 continue
             boot = _Boot(deadline)
@@ -565,7 +575,7 @@ class FuturaI3Client:
 
     @callback
     def _check_boot(self, _now: Any = None) -> None:
-        """A channel's period has passed since the boot: what it said stands."""
+        """A channel's grace has passed since the boot: what it said stands."""
         self._boot_timer = None
         now = _monotonic()
         moved = False

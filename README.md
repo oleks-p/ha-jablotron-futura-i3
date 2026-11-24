@@ -171,10 +171,11 @@ repository's README for the card reference and the design tokens.
   from the i3 app during a restart shows its old value until the next change or
   controller restart.
 - **After a controller restart, a value that went to 0 while it was down
-  shows its old value for up to one channel period.** A booting controller
-  publishes 0 for every channel before it has read anything, so a 0 then only
-  counts once the controller reports a good read of that channel, or once the
-  channel's period has passed with nothing else published. Until then the last
+  shows its old value for up to twice the channel period plus two minutes.** A
+  booting controller publishes 0 for every channel before it has read anything,
+  and its first real read comes about one period later plus up to 90 s. So a 0
+  then only counts once the controller reports a good read of that channel, or
+  once that time has passed with nothing else published. Until then the last
   known value stays, so fitted sensors do not read as absent and the
   ventilation does not read as off for the first minutes after every restart.
 - **External sensor slots must be rewritten at least every minute.** The Futura
