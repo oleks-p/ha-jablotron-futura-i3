@@ -132,3 +132,15 @@ async def test_a_failure_outside_a_boot_still_counts_at_once(
     async_fire_mqtt_message(hass, controller.topic(supply, "available"), "0")
     await settle(hass)
     assert hass.states.get(SUPPLY).state == "unknown"
+
+
+async def test_a_value_after_a_failure_clears_it(
+    hass: HomeAssistant, setup_integration, controller
+):
+    supply = controller.channel_at(Table.INPUT, 31)
+    async_fire_mqtt_message(hass, controller.topic(supply, "available"), "0")
+    await settle(hass)
+    assert hass.states.get(SUPPLY).state == "unknown"
+    controller.set_word(Table.INPUT, 31, 160)
+    await settle(hass)
+    assert hass.states.get(SUPPLY).state == "16.0"

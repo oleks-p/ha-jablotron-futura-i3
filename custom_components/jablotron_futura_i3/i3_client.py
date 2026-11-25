@@ -628,7 +628,15 @@ class FuturaI3Client:
             pending = self._zero_confirm.pop(ch.point, None)
             if pending is not None:
                 pending()
-        return self._fold(ch, raw)
+        # A value the controller publishes outside a boot is a read that
+        # worked, whatever `available` said last. The controller publishes
+        # `available` only when it changes, and after a boot it can leave a
+        # channel's placeholder 0 standing while it reads it fine: seen on a
+        # Hydrogen N, the mode flags stayed unknown for 3.5 hours while their
+        # values kept arriving.
+        recovered = ch.point in self._failed
+        self._failed.discard(ch.point)
+        return self._fold(ch, raw) or recovered
 
     def _fold(self, ch: Channel, raw: int) -> bool:
         if ch.words == 1:

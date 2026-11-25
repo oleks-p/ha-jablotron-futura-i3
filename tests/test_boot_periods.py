@@ -51,3 +51,24 @@ async def test_the_grace_still_ends(
     await settle(hass)
     assert hass.states.get(SUPPLY).state == "unknown"
     assert hass.states.get(FAN).state == "off"
+
+
+async def test_a_value_after_the_grace_clears_the_failure(
+    hass: HomeAssistant, setup_integration, controller, monkeypatch
+):
+    """The controller may never repeat `available`; its values say enough.
+
+    Seen on a Hydrogen N: a boot's failure outlived the grace and the mode
+    flags stayed unknown for 3.5 hours while their new values kept arriving.
+    """
+    supply = controller.channel_at(Table.INPUT, 31)
+    controller.heartbeat(20)
+    _placeholders(hass, controller, failed=[supply])
+    await settle(hass)
+    await _later(hass, monkeypatch, i3_client.boot_grace(PERIOD) + 1)
+    await settle(hass)
+    assert hass.states.get(SUPPLY).state == "unknown"
+    controller.set_word(Table.INPUT, 31, 183)
+    await settle(hass)
+    assert hass.states.get(SUPPLY).state == "18.3"
+    assert _client(hass, setup_integration).failed_channels() == []
